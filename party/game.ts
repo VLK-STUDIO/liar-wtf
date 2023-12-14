@@ -60,15 +60,6 @@ export class Game {
 
     this.notifier = notifier;
 
-    for (const playerId of this.state.players.allIds) {
-      this.notifier(playerId, {
-        type: "PLAYER_JOINED",
-        payload: {
-          player,
-        },
-      });
-    }
-
     this.state.players.byId[player.id] = {
       name: player.name,
       score: 0,
@@ -81,16 +72,18 @@ export class Game {
       this.state.hostId = player.id;
     }
 
-    this.notifier(player.id, {
-      type: "INIT",
-      payload: {
-        players: this.state.players.allIds.map((id) => ({
-          id,
-          name: this.state.players.byId[id].name,
-        })),
-        hostId: this.state.hostId,
-      },
-    });
+    for (const playerId of this.state.players.allIds) {
+      this.notifier(playerId, {
+        type: "STATE_UPDATE",
+        payload: {
+          state: {
+            phase: this.state.phase,
+            hostId: this.state.hostId,
+            players: this.state.players,
+          },
+        },
+      });
+    }
   }
 
   async removePlayer(playerId: string) {
@@ -110,11 +103,19 @@ export class Game {
       this.state.hostId = this.state.players.allIds[0] ?? null;
     }
 
+    if (!this.state.hostId) {
+      return;
+    }
+
     for (const playerId of this.state.players.allIds) {
       this.notifier?.(playerId, {
-        type: "PLAYER_LEFT",
+        type: "STATE_UPDATE",
         payload: {
-          playerId,
+          state: {
+            phase: this.state.phase,
+            hostId: this.state.hostId,
+            players: this.state.players,
+          },
         },
       });
     }
@@ -132,14 +133,16 @@ export class Game {
 
     for (const playerId of this.state.players.allIds) {
       this.notifier?.(playerId, {
-        type: "CHOOSING_TOPIC_PHASE_STARTED",
+        type: "STATE_UPDATE",
         payload: {
-          phaseEndsAt: Date.now() + Game.TIME_TO_CHOOSE_TOPIC,
-          guesserId: this.state.guesserId,
-          topic:
-            playerId === this.state.guesserId
-              ? null
-              : this.state.topics[playerId],
+          state: {
+            phase: this.state.phase,
+            phaseEndsAt: Date.now() + Game.TIME_TO_CHOOSE_TOPIC,
+            topic:
+              playerId === this.state.guesserId
+                ? null
+                : this.state.topics[playerId],
+          },
         },
       });
     }
@@ -167,16 +170,18 @@ export class Game {
 
     for (const playerId of this.state.players.allIds) {
       this.notifier?.(playerId, {
-        type: "SHOWING_SCOREBOARD_PHASE_STARTED",
+        type: "STATE_UPDATE",
         payload: {
-          winnerId: guessId,
-          playerScores: Object.fromEntries(
-            this.state.players.allIds.map((playerId) => [
-              playerId,
-              this.state.players.byId[playerId].score,
-            ])
-          ),
-          hasGuesserWon: isGuesserCorrect,
+          state: {
+            phase: this.state.phase,
+            phaseEndsAt: Date.now() + Game.TIME_TO_SHOW_SCOREBOARD,
+            winnerId: guessId,
+            hasGuesserWon: isGuesserCorrect,
+            players: {
+              byId: this.state.players.byId,
+              allIds: this.state.players.allIds,
+            },
+          },
         },
       });
     }
@@ -199,14 +204,12 @@ export class Game {
 
     for (const playerId of this.state.players.allIds) {
       this.notifier?.(playerId, {
-        type: "GAME_OVER",
+        type: "STATE_UPDATE",
         payload: {
-          playerScores: Object.fromEntries(
-            this.state.players.allIds.map((playerId) => [
-              playerId,
-              this.state.players.byId[playerId].score,
-            ])
-          ),
+          state: {
+            phase: "GAME_OVER",
+            players: this.state.players,
+          },
         },
       });
     }
@@ -216,9 +219,27 @@ export class Game {
     this.state.phase = "GUESSING_TRUTHTELLER";
 
     this.notifier?.(this.state.guesserId!, {
-      type: "GUESSING_TRUTHTELLER_PHASE_STARTED",
+      type: "STATE_UPDATE",
       payload: {
-        topicTitle: this.state.topics[this.state.guesserId!].title,
+        state: {
+          phase: this.state.phase,
+          chosenTopicTitle: this.state.topics[this.state.truthtellerId!].title,
+          suspects: {
+            byId: Object.fromEntries(
+              this.state.players.allIds
+                .filter((id) => id !== this.state.guesserId)
+                .map((id) => [
+                  id,
+                  {
+                    name: this.state.players.byId[id].name,
+                  },
+                ])
+            ),
+            allIds: this.state.players.allIds.filter(
+              (id) => id !== this.state.guesserId
+            ),
+          },
+        },
       },
     });
   }

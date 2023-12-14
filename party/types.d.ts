@@ -1,63 +1,75 @@
 import { GameEvent } from "~/party/game";
 
-export type GameEvent =
-  | {
-      type: "INIT";
-      payload: {
-        players: {
-          id: string;
-          name: string;
-        }[];
-        hostId: string;
-      };
-    }
-  | {
-      type: "PLAYER_JOINED";
-      payload: {
-        player: {
-          id: string;
-          name: string;
+export type GameEvent = {
+  type: "STATE_UPDATE";
+  payload: {
+    state:
+      | {
+          phase: "LOBBY";
+          hostId: string;
+          players: {
+            byId: {
+              [id: string]: {
+                name: string;
+              };
+            };
+            allIds: string[];
+          };
+        }
+      | {
+          phase: "CHOOSING_TOPIC";
+          topic: {
+            id: string;
+            title: string;
+            summary: string;
+          } | null;
+          phaseEndsAt: number;
+        }
+      | {
+          phase: "GUESSING_TRUTHTELLER";
+          chosenTopicTitle: string;
+          suspects: {
+            byId: {
+              [id: string]: {
+                name: string;
+              };
+            };
+            allIds: string[];
+          };
+        }
+      | {
+          phase: "WAITING_FOR_GUESS";
+          chosenTopicTitle: string;
+        }
+      | {
+          phase: "SHOWING_SCOREBOARD";
+          winnerId: string;
+          players: {
+            byId: {
+              [id: string]: {
+                name: string;
+                score: number;
+              };
+            };
+            allIds: string[];
+          };
+          hasGuesserWon: boolean;
+          phaseEndsAt: number;
+        }
+      | {
+          phase: "GAME_OVER";
+          players: {
+            byId: {
+              [id: string]: {
+                name: string;
+                score: number;
+              };
+            };
+            allIds: string[];
+          };
         };
-      };
-    }
-  | {
-      type: "PLAYER_LEFT";
-      payload: {
-        playerId: string;
-      };
-    }
-  | {
-      type: "CHOOSING_TOPIC_PHASE_STARTED";
-      payload: {
-        topic: {
-          id: string;
-          title: string;
-          summary: string;
-        } | null;
-        phaseEndsAt: number;
-        guesserId: string;
-      };
-    }
-  | {
-      type: "GUESSING_TRUTHTELLER_PHASE_STARTED";
-      payload: {
-        topicTitle: string;
-      };
-    }
-  | {
-      type: "SHOWING_SCOREBOARD_PHASE_STARTED";
-      payload: {
-        winnerId: string;
-        playerScores: Record<string, number>;
-        hasGuesserWon: boolean;
-      };
-    }
-  | {
-      type: "GAME_OVER";
-      payload: {
-        playerScores: Record<string, number>;
-      };
-    };
+  };
+};
 
 export type PartyClientRequest =
   | {

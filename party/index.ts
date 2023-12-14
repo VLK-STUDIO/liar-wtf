@@ -1,5 +1,5 @@
-import type * as Party from "partykit/server";
 import { Game } from "~/party/game";
+import type * as Party from "partykit/server";
 import type { PartyClientRequest, GameEvent } from "~/party/types";
 
 export default class Server implements Party.Server {
@@ -42,47 +42,59 @@ export default class Server implements Party.Server {
     );
   }
 
-  async onMessage(message: string, conn: Party.Connection) {
-    const event = JSON.parse(message) as PartyClientRequest;
+  async onRequest(req: Party.Request) {
+    const userId = req.headers.get("x-user-id");
 
-    if (event.type === "START_GAME") {
+    if (!userId) {
+      return new Response("Missing user id", { status: 400 });
+    }
+
+    const body: PartyClientRequest = await req.json();
+
+    if (body.type === "START_GAME") {
       if (this.game.state.phase !== "LOBBY") {
         console.log(
           "A player tried to start the game without being in the LOBBY phase"
         );
-        return;
+        return new Response("Invalid phase", { status: 400 });
       }
 
       if (this.game.state.players.allIds.length < 2) {
         console.log("A player tried to start the game without enough players");
-        return;
+        return new Response("Invalid phase", { status: 400 });
       }
 
-      if (conn.id !== this.game.state.hostId) {
+      if (userId !== this.game.state.hostId) {
         console.log("A player tried to start the game without being the host");
-        return;
+        return new Response("Invalid phase", { status: 400 });
       }
 
       await this.game.startGame();
-    } else if (event.type === "CHOOSE_TRUTHTELLER") {
+
+      return new Response("OK");
+    }
+
+    if (body.type === "CHOOSE_TRUTHTELLER") {
       if (this.game.state.phase !== "GUESSING_TRUTHTELLER") {
         console.log(
           "A player tried to choose a truthteller without being in the GUESSING_TRUTHTELLER phase"
         );
-        return;
+        return new Response("Invalid phase", { status: 400 });
       }
 
-      if (conn.id !== this.game.state.guesserId) {
+      if (userId !== this.game.state.guesserId) {
         console.log(
           "A player tried to choose a truthteller without being the guesser"
         );
-        return;
+        return new Response("Invalid phase", { status: 400 });
       }
 
-      await this.game.guessTruthTeller(event.playerId);
-    } else {
-      console.warn("Unknown event", event);
+      await this.game.guessTruthTeller(body.playerId);
+
+      return new Response("OK");
     }
+
+    return new Response("Unknown event", { status: 400 });
   }
 
   async onDisconnect(conn: Party.Connection) {
