@@ -43,7 +43,22 @@ export default class Server implements Party.Server {
   }
 
   async onRequest(req: Party.Request) {
-    const userId = req.headers.get("x-user-id");
+    if (req.method === "OPTIONS") {
+      return new Response("OK", {
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Methods": "POST",
+        },
+      });
+    }
+
+    if (req.method !== "POST") {
+      return new Response("Invalid method", { status: 405 });
+    }
+
+    const userId = req.headers.get("X-User-Id");
 
     if (!userId) {
       return new Response("Missing user id", { status: 400 });
@@ -99,10 +114,6 @@ export default class Server implements Party.Server {
 
   async onDisconnect(conn: Party.Connection) {
     this.game.removePlayer(conn.id);
-
-    if (this.game.state.players.allIds.length === 0) {
-      this.game = new Game();
-    }
   }
 
   static sendEventToConnection(conn: Party.Connection, event: GameEvent) {

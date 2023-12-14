@@ -74,7 +74,6 @@ export type GameEvent = {
 export type PartyClientRequest =
   | {
       type: "START_GAME";
-      response: {};
     }
   | {
       type: "CHOOSE_TRUTHTELLER";
