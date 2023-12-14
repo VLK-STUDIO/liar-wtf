@@ -1,0 +1,5 @@
+{
+  "name": "nuxt-app-party",
+  "main": "party/index.ts",
+  "compatibilityDate": "2023-12-10"
+}
