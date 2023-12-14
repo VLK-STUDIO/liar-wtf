@@ -18,7 +18,7 @@
       <h1 class="font-serif font-semibold text-3xl text-center">Room Lobby</h1>
       <p class="text-gray-600 text-center">
         Have your friends join by entering the room code
-        <strong class="text-black">{{ roomId }}</strong>
+        <strong class="font-semibold">{{ roomId }}</strong>
       </p>
     </div>
 

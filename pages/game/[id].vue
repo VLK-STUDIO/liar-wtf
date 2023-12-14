@@ -4,6 +4,11 @@
   import type { StateShape } from "~/stores/game";
 
   const route = useRoute();
+
+  useSeoMeta({
+    title: `Room ${route.params.id} - truth.io`,
+  });
+
   const toast = useToast();
 
   if (!route.params.id || typeof route.params.id !== "string") {

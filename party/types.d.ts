@@ -40,6 +40,7 @@ export type GameEvent = {
       | {
           phase: "WAITING_FOR_GUESS";
           chosenTopicTitle: string;
+          guesserName: string;
         }
       | {
           phase: "SHOWING_SCOREBOARD";

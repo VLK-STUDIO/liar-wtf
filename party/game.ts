@@ -242,6 +242,24 @@ export class Game {
         },
       },
     });
+
+    for (const playerId of this.state.players.allIds) {
+      if (playerId === this.state.guesserId) {
+        continue;
+      }
+
+      this.notifier?.(playerId, {
+        type: "STATE_UPDATE",
+        payload: {
+          state: {
+            phase: "WAITING_FOR_GUESS",
+            chosenTopicTitle:
+              this.state.topics[this.state.truthtellerId!].title,
+            guesserName: this.state.players.byId[this.state.guesserId!].name,
+          },
+        },
+      });
+    }
   }
 
   private async fetchTopicsForPlayers() {

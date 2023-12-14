@@ -15,5 +15,16 @@
   <GameChoosingTopic
     v-else-if="game.phase === 'CHOOSING_TOPIC' && game.topic !== null"
     :topic="game.topic"
+    :phaseEndsAt="game.phaseEndsAt"
+  />
+  <GameWaitingForGuess
+    v-else-if="game.phase === 'WAITING_FOR_GUESS'"
+    :guesserName="game.guesserName"
+    :topicTitle="game.chosenTopicTitle"
+  />
+  <GameGuessingTruthteller
+    v-else-if="game.phase === 'GUESSING_TRUTHTELLER'"
+    :topicTitle="game.chosenTopicTitle"
+    :suspects="game.suspects"
   />
 </template>
