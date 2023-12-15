@@ -17,6 +17,7 @@ type GameState = {
         name: string;
         score: number;
         topicId: string | null;
+        disconnected?: boolean;
       }
     >;
     allIds: string[];
@@ -29,6 +30,7 @@ type GameState = {
       summary: string;
     }
   >;
+  currentPhaseEndsAt?: number;
 };
 
 type Notifier = (playerId: string, event: GameEvent) => void;
@@ -52,13 +54,37 @@ export class Game {
   notifier?: Notifier;
 
   async addPlayer(player: { id: string; name: string }, notifier: Notifier) {
-    if (this.state.phase !== "LOBBY") {
-      console.log("A player joined without being in the LOBBY phase");
+    this.notifier = notifier;
+
+    if (this.state.players.byId[player.id]) {
+      this.state.players.byId[player.id].disconnected = false;
+
+      for (const playerId of this.state.players.allIds) {
+        if (playerId === player.id) {
+          continue;
+        }
+
+        this.notifier(playerId, {
+          type: "PLAYER_RECONNECTED",
+          payload: {
+            playerName: this.state.players.byId[player.id].name,
+          },
+        });
+      }
+
+      this.notifier(player.id, {
+        type: "STATE_UPDATE",
+        payload: this.computeCurrentGameEventForPlayer(player.id),
+      });
 
       return;
     }
 
-    this.notifier = notifier;
+    if (this.state.phase !== "LOBBY") {
+      console.log("Player tried to join after game started");
+
+      return;
+    }
 
     this.state.players.byId[player.id] = {
       name: player.name,
@@ -87,35 +113,44 @@ export class Game {
   }
 
   async removePlayer(playerId: string) {
-    if (this.state.phase !== "LOBBY") {
-      console.log("A player left without being in the LOBBY phase");
+    if (this.state.phase === "LOBBY") {
+      this.state.players.allIds = this.state.players.allIds.filter(
+        (id) => id !== playerId
+      );
+
+      delete this.state.players.byId[playerId];
+
+      if (this.state.hostId === playerId) {
+        this.state.hostId = this.state.players.allIds[0] || null;
+      }
+
+      for (const playerId of this.state.players.allIds) {
+        this.notifier?.(playerId, {
+          type: "STATE_UPDATE",
+          payload: {
+            state: {
+              phase: this.state.phase,
+              hostId: this.state.hostId!,
+              players: this.state.players,
+            },
+          },
+        });
+      }
 
       return;
     }
 
-    delete this.state.players.byId[playerId];
-
-    this.state.players.allIds = this.state.players.allIds.filter(
-      (id) => id !== playerId
-    );
-
-    if (this.state.hostId === playerId) {
-      this.state.hostId = this.state.players.allIds[0] ?? null;
-    }
-
-    if (!this.state.hostId) {
-      return;
-    }
+    this.state.players.byId[playerId].disconnected = true;
 
     for (const playerId of this.state.players.allIds) {
+      if (playerId === this.state.guesserId) {
+        continue;
+      }
+
       this.notifier?.(playerId, {
-        type: "STATE_UPDATE",
+        type: "PLAYER_DISCONNECTED",
         payload: {
-          state: {
-            phase: this.state.phase,
-            hostId: this.state.hostId,
-            players: this.state.players,
-          },
+          playerName: this.state.players.byId[playerId].name,
         },
       });
     }
@@ -130,6 +165,7 @@ export class Game {
     this.state.guesserId = this.getNextGuesserId();
     this.state.topics = await this.fetchTopicsForPlayers();
     this.state.truthtellerId = this.getNextTruthTellerId();
+    this.state.currentPhaseEndsAt = Date.now() + Game.TIME_TO_CHOOSE_TOPIC;
 
     for (const playerId of this.state.players.allIds) {
       this.notifier?.(playerId, {
@@ -137,7 +173,7 @@ export class Game {
         payload: {
           state: {
             phase: this.state.phase,
-            phaseEndsAt: Date.now() + Game.TIME_TO_CHOOSE_TOPIC,
+            phaseEndsAt: this.state.currentPhaseEndsAt,
             topic:
               playerId === this.state.guesserId
                 ? null
@@ -167,6 +203,7 @@ export class Game {
       this.state.truthtellerId === guessId ? 1 : 2;
 
     this.state.phase = "SHOWING_SCOREBOARD";
+    this.state.currentPhaseEndsAt = Date.now() + Game.TIME_TO_SHOW_SCOREBOARD;
 
     for (const playerId of this.state.players.allIds) {
       this.notifier?.(playerId, {
@@ -174,13 +211,25 @@ export class Game {
         payload: {
           state: {
             phase: this.state.phase,
-            phaseEndsAt: Date.now() + Game.TIME_TO_SHOW_SCOREBOARD,
+            phaseEndsAt: this.state.currentPhaseEndsAt,
             winnerId: guessId,
             hasGuesserWon: isGuesserCorrect,
             players: {
-              byId: this.state.players.byId,
+              byId: {
+                ...this.state.players.byId,
+                [this.state.guesserId!]: {
+                  ...this.state.players.byId[this.state.guesserId!],
+                  gainedPoints: isGuesserCorrect ? 1 : 0,
+                },
+                [guessId]: {
+                  ...this.state.players.byId[guessId],
+                  gainedPoints: isGuesserCorrect ? 1 : 2,
+                },
+              },
               allIds: this.state.players.allIds,
             },
+            guesserId: this.state.guesserId!,
+            truthTellerId: this.state.truthtellerId!,
           },
         },
       });
@@ -296,6 +345,106 @@ export class Game {
     const index = Math.floor(Math.random() * playersWithoutGuesser.length);
 
     return playersWithoutGuesser[index];
+  }
+
+  private computeCurrentGameEventForPlayer(
+    playerId: string
+  ): Extract<GameEvent, { type: "STATE_UPDATE" }>["payload"] {
+    if (this.state.phase === "LOBBY") {
+      return {
+        state: {
+          phase: this.state.phase,
+          hostId: this.state.hostId!,
+          players: this.state.players,
+        },
+      };
+    }
+
+    if (this.state.phase === "CHOOSING_TOPIC") {
+      return {
+        state: {
+          phase: this.state.phase,
+          phaseEndsAt: this.state.currentPhaseEndsAt!,
+          topic:
+            playerId === this.state.guesserId
+              ? null
+              : this.state.topics[playerId],
+        },
+      };
+    }
+
+    if (this.state.phase === "GUESSING_TRUTHTELLER") {
+      if (playerId === this.state.guesserId) {
+        return {
+          state: {
+            phase: this.state.phase,
+            chosenTopicTitle:
+              this.state.topics[this.state.truthtellerId!].title,
+            suspects: {
+              byId: Object.fromEntries(
+                this.state.players.allIds
+                  .filter((id) => id !== this.state.guesserId)
+                  .map((id) => [
+                    id,
+                    {
+                      name: this.state.players.byId[id].name,
+                    },
+                  ])
+              ),
+              allIds: this.state.players.allIds.filter(
+                (id) => id !== this.state.guesserId
+              ),
+            },
+          },
+        };
+      }
+
+      return {
+        state: {
+          phase: "WAITING_FOR_GUESS",
+          chosenTopicTitle: this.state.topics[this.state.truthtellerId!].title,
+          guesserName: this.state.players.byId[this.state.guesserId!].name,
+        },
+      };
+    }
+
+    if (this.state.phase === "SHOWING_SCOREBOARD") {
+      return {
+        state: {
+          phase: this.state.phase,
+          phaseEndsAt: this.state.currentPhaseEndsAt!,
+          winnerId: this.state.truthtellerId!,
+          hasGuesserWon: false,
+          players: {
+            byId: {
+              ...this.state.players.byId,
+              [this.state.guesserId!]: {
+                ...this.state.players.byId[this.state.guesserId!],
+                gainedPoints: 0,
+              },
+              [this.state.truthtellerId!]: {
+                ...this.state.players.byId[this.state.truthtellerId!],
+                gainedPoints: 2,
+              },
+            },
+            allIds: this.state.players.allIds,
+          },
+          guesserId: this.state.guesserId!,
+          truthTellerId: this.state.truthtellerId!,
+        },
+      };
+    }
+
+    if (this.state.phase === "GAME_OVER") {
+      return {
+        state: {
+          phase: "GAME_OVER",
+          players: this.state.players,
+        },
+      };
+    }
+
+    throw new Error("Invalid phase while computing game event for player");
   }
 
   static async fetchRandomTopic() {

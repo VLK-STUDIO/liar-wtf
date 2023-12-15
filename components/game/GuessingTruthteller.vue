@@ -1,4 +1,7 @@
 <script setup lang="ts">
+  import type { UnwrapRef } from "vue";
+  import type { FormSubmitEvent } from "@nuxt/ui/dist/runtime/types";
+
   defineProps<{
     topicTitle: string;
     suspects: {
@@ -7,11 +10,23 @@
     };
   }>();
 
+  const gameStore = useGameStore();
+
+  const isChoicePending = ref(false);
+
   const formState = ref({
     selectedSuspectId: null as string | null,
   });
 
-  function handleSubmit() {}
+  async function handleSubmit({
+    data,
+  }: FormSubmitEvent<UnwrapRef<typeof formState>>) {
+    isChoicePending.value = true;
+
+    await gameStore.chooseTruthteller(data.selectedSuspectId!);
+
+    isChoicePending.value = false;
+  }
 </script>
 
 <template>
@@ -20,16 +35,9 @@
     @submit="handleSubmit"
     class="w-full flex flex-col items-center gap-10 text-center"
   >
-    <div class="flex flex-col items-center gap-2">
-      <h1 class="text-2xl font-semibold font-serif">
-        The topic is
-        <br />
-        {{ topicTitle }}
-      </h1>
-
-      <p class="text-gray-600">Guess who's telling the truth!</p>
-    </div>
-
+    <DescribedHeader :title="`The topic is ${topicTitle}`">
+      Guess who's telling the truth!
+    </DescribedHeader>
     <div class="w-full flex flex-col gap-2">
       <UButton
         v-for="suspectId in suspects.allIds"
@@ -52,6 +60,7 @@
       block
       :disabled="formState.selectedSuspectId === null"
       type="submit"
+      :loading="isChoicePending"
     >
       Confirm choice
     </UButton>

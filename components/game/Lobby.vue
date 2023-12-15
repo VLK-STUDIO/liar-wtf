@@ -10,17 +10,24 @@
   }>();
 
   const gameStore = useGameStore();
+
+  const isStartPending = ref(false);
+
+  async function handleStartGame() {
+    isStartPending.value = true;
+
+    await gameStore.startGame();
+
+    isStartPending.value = false;
+  }
 </script>
 
 <template>
   <div class="w-full flex flex-col">
-    <div class="flex flex-col gap-2 items-center mb-10">
-      <h1 class="font-serif font-semibold text-3xl text-center">Room Lobby</h1>
-      <p class="text-gray-600 text-center">
-        Have your friends join by entering the room code
-        <strong class="font-semibold">{{ roomId }}</strong>
-      </p>
-    </div>
+    <DescribedHeader title="Room Lobby" class="mb-6">
+      Have your friends join by entering the room code
+      <strong class="font-semibold">{{ roomId }}</strong>
+    </DescribedHeader>
 
     <div class="w-full flex flex-col gap-2 mb-3">
       <div
@@ -40,7 +47,14 @@
     <p v-else-if="hostId !== userId" class="text-center text-gray-600 text-sm">
       Waiting for host to start...
     </p>
-    <UButton v-else block size="lg" class="mt-6" @click="gameStore.startGame">
+    <UButton
+      v-else
+      block
+      size="lg"
+      class="mt-6"
+      @click="handleStartGame"
+      :loading="isStartPending"
+    >
       Start Game
     </UButton>
   </div>

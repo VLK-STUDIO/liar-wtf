@@ -27,4 +27,12 @@
     :topicTitle="game.chosenTopicTitle"
     :suspects="game.suspects"
   />
+  <GameScoreboard
+    v-else-if="game.phase === 'SHOWING_SCOREBOARD'"
+    :players="game.players"
+    :winnerId="game.winnerId"
+    :truthtellerId="game.truthTellerId"
+    :hasGuesserWon="game.hasGuesserWon"
+    :guesserId="game.guesserId"
+  />
 </template>

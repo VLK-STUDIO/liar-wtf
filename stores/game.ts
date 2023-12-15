@@ -9,7 +9,7 @@ export type StateShape =
       socket: PartySocket;
       userId: string;
       roomId: string;
-    } & GameEvent["payload"]["state"]);
+    } & Extract<GameEvent, { type: "STATE_UPDATE" }>["payload"]["state"]);
 
 export const useGameStore = defineStore("game", {
   state: () => {
@@ -22,7 +22,7 @@ export const useGameStore = defineStore("game", {
   actions: {
     connect(roomId: string, username: string) {
       return new Promise<void>((resolve, reject) => {
-        const userId = crypto.randomUUID();
+        const userId = this.getUserId();
 
         const socket = new PartySocket({
           host: "localhost:1999",
@@ -60,6 +60,46 @@ export const useGameStore = defineStore("game", {
         };
       });
     },
+    registerToPlayerConnectionEvents(
+      callback: (
+        event:
+          | {
+              type: "PLAYER_RECONNECTED";
+              payload: {
+                playerName: string;
+              };
+            }
+          | {
+              type: "PLAYER_DISCONNECTED";
+              payload: {
+                playerName: string;
+              };
+            }
+      ) => void
+    ) {
+      if (this.state.phase === "INIT") return;
+
+      function handleMessage(e: MessageEvent) {
+        const event = JSON.parse(e.data) as GameEvent;
+
+        if (
+          event.type === "PLAYER_RECONNECTED" ||
+          event.type === "PLAYER_DISCONNECTED"
+        ) {
+          console.log("Player connection event", event);
+
+          callback(event);
+        }
+      }
+
+      this.state.socket.addEventListener("message", handleMessage);
+
+      return () => {
+        if (!("socket" in this.state)) return;
+
+        this.state.socket.removeEventListener("message", handleMessage);
+      };
+    },
     async startGame() {
       await this.socketFetch({
         type: "START_GAME",
@@ -70,6 +110,19 @@ export const useGameStore = defineStore("game", {
         type: "CHOOSE_TRUTHTELLER",
         playerId,
       });
+    },
+    getUserId() {
+      const storedId = localStorage.getItem("userId");
+
+      if (storedId) {
+        return storedId;
+      }
+
+      const userId = crypto.randomUUID();
+
+      localStorage.setItem("userId", userId);
+
+      return userId;
     },
     async socketFetch(request: PartyClientRequest) {
       if (this.state.phase === "INIT") return;

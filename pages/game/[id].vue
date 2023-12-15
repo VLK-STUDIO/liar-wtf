@@ -9,6 +9,8 @@
     title: `Room ${route.params.id} - truth.io`,
   });
 
+  const gameStore = useGameStore();
+
   const toast = useToast();
 
   if (!route.params.id || typeof route.params.id !== "string") {
@@ -21,8 +23,6 @@
 
   const isConnectionPending = ref(false);
 
-  const gameStore = useGameStore();
-
   async function handleSubmit({
     data,
   }: FormSubmitEvent<UnwrapRef<typeof formState>>) {
@@ -30,6 +30,24 @@
 
     try {
       await gameStore.connect(route.params.id as string, data.name);
+
+      gameStore.registerToPlayerConnectionEvents((event) => {
+        if (event.type === "PLAYER_DISCONNECTED") {
+          toast.add({
+            title: "Player disconnected",
+            description: `${event.payload.playerName} has lost connection.`,
+            icon: "i-heroicons-user-remove",
+            color: "red",
+          });
+        } else if (event.type === "PLAYER_RECONNECTED") {
+          toast.add({
+            title: "Player reconnected",
+            description: `${event.payload.playerName} has reconnected.`,
+            icon: "i-heroicons-user-add",
+            color: "green",
+          });
+        }
+      });
     } catch (error) {
       toast.add({
         title: "Couldn't connect to server",

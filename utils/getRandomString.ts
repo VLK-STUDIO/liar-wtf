@@ -1,5 +1,5 @@
 export function getRandomString(length: number) {
-  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
   let result = "";
 
