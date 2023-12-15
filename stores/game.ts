@@ -24,8 +24,11 @@ export const useGameStore = defineStore("game", {
       return new Promise<void>((resolve, reject) => {
         const userId = this.getUserId();
 
+        const PARTYKIT_HOST =
+          import.meta.env.VITE_PARTYKIT_HOST || "localhost:1999";
+
         const socket = new PartySocket({
-          host: "localhost:1999",
+          host: PARTYKIT_HOST,
           room: roomId,
           id: userId,
           query: () => {
