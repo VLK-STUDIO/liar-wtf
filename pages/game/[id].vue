@@ -6,7 +6,7 @@
   const route = useRoute();
 
   useSeoMeta({
-    title: `Room ${route.params.id} - truth.io`,
+    title: `Room ${route.params.id}`,
   });
 
   const gameStore = useGameStore();

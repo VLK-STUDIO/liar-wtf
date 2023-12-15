@@ -1,6 +1,6 @@
 <script setup lang="ts">
   useSeoMeta({
-    title: "Home - truth.io",
+    title: "Home",
   });
 
   const STATIC_ROOM_CODE = getRandomString(5);
