@@ -7,7 +7,11 @@
     phaseEndsAt: number;
   }>();
 
+  const gameStore = useGameStore();
+
   const timeLeft = ref(props.phaseEndsAt - Date.now());
+
+  const isTopicChangeRequestPending = ref(false);
 
   const max = Math.floor((props.phaseEndsAt - Date.now()) / 1000);
 
@@ -26,6 +30,14 @@
 
     return result < 0 ? 0 : result;
   });
+
+  async function requestTopicChange() {
+    isTopicChangeRequestPending.value = true;
+
+    await gameStore.requestNewTopic();
+
+    isTopicChangeRequestPending.value = false;
+  }
 </script>
 
 <template>
@@ -34,6 +46,15 @@
       <h1 class="text-3xl font-semibold font-serif">{{ topic.title }}</h1>
       <p class="font-serif text-gray-600">{{ topic.summary }}</p>
     </div>
+    <UButton
+      block
+      @click="requestTopicChange"
+      size="lg"
+      color="gray"
+      :loading="isTopicChangeRequestPending"
+    >
+      Change Topic
+    </UButton>
     <UProgress :value="secondsLeft" :max="max" />
   </div>
 </template>

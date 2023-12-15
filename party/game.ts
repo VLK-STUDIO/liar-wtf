@@ -248,6 +248,19 @@ export class Game {
     }, Game.TIME_TO_SHOW_SCOREBOARD);
   }
 
+  async changePlayerTopic(playerId: string) {
+    if (this.state.phase !== "CHOOSING_TOPIC") {
+      console.log("Player tried to change topic while not in the right phase");
+      return;
+    }
+
+    const topic = await Game.fetchRandomTopic();
+
+    this.state.topics[playerId] = topic;
+
+    return topic;
+  }
+
   private async endGame() {
     this.state.phase = "GAME_OVER";
 

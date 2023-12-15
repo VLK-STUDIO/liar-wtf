@@ -13,7 +13,7 @@ export default class Server implements Party.Server {
     const name = Server.getNameFromRequest(request);
 
     if (!name) {
-      return new Response("Missing name", { status: 400 });
+      return Server.createResponse({ error: "Missing name" }, 400);
     }
 
     return request;
@@ -44,24 +44,17 @@ export default class Server implements Party.Server {
 
   async onRequest(req: Party.Request) {
     if (req.method === "OPTIONS") {
-      return new Response("OK", {
-        status: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "*",
-          "Access-Control-Allow-Methods": "POST",
-        },
-      });
+      return Server.createResponse({ success: true });
     }
 
     if (req.method !== "POST") {
-      return new Response("Invalid method", { status: 405 });
+      return Server.createResponse({ error: "Invalid method" }, 400);
     }
 
     const userId = req.headers.get("X-User-Id");
 
     if (!userId) {
-      return new Response("Missing user id", { status: 400 });
+      return Server.createResponse({ error: "Missing user id" }, 400);
     }
 
     const body: PartyClientRequest = await req.json();
@@ -71,22 +64,22 @@ export default class Server implements Party.Server {
         console.log(
           "A player tried to start the game without being in the LOBBY phase"
         );
-        return new Response("Invalid phase", { status: 400 });
+        return Server.createResponse({ error: "Invalid phase" }, 400);
       }
 
       if (this.game.state.players.allIds.length < 2) {
         console.log("A player tried to start the game without enough players");
-        return new Response("Invalid phase", { status: 400 });
+        return Server.createResponse({ error: "Not enough players" }, 400);
       }
 
       if (userId !== this.game.state.hostId) {
         console.log("A player tried to start the game without being the host");
-        return new Response("Invalid phase", { status: 400 });
+        return Server.createResponse({ error: "Unauthorized" }, 401);
       }
 
       await this.game.startGame();
 
-      return new Response("OK");
+      return Server.createResponse({ success: true });
     }
 
     if (body.type === "CHOOSE_TRUTHTELLER") {
@@ -94,22 +87,35 @@ export default class Server implements Party.Server {
         console.log(
           "A player tried to choose a truthteller without being in the GUESSING_TRUTHTELLER phase"
         );
-        return new Response("Invalid phase", { status: 400 });
+        return Server.createResponse({ error: "Invalid phase" }, 400);
       }
 
       if (userId !== this.game.state.guesserId) {
         console.log(
           "A player tried to choose a truthteller without being the guesser"
         );
-        return new Response("Invalid phase", { status: 400 });
+        return Server.createResponse({ error: "Unauthorized" }, 401);
       }
 
       await this.game.guessTruthTeller(body.playerId);
 
-      return new Response("OK");
+      return Server.createResponse({ success: true });
     }
 
-    return new Response("Unknown event", { status: 400 });
+    if (body.type === "REQUEST_NEW_TOPIC") {
+      if (this.game.state.phase !== "CHOOSING_TOPIC") {
+        console.log(
+          "A player tried to request a new topic without being in the CHOOSING_TOPIC phase"
+        );
+        return Server.createResponse({ error: "Invalid phase" }, 400);
+      }
+
+      const newTopic = await this.game.changePlayerTopic(userId);
+
+      return Server.createResponse({ newTopic });
+    }
+
+    return Server.createResponse({ error: "Invalid request" }, 400);
   }
 
   async onClose(conn: Party.Connection) {
@@ -130,6 +136,18 @@ export default class Server implements Party.Server {
     }
 
     return name;
+  }
+
+  static createResponse(body: any, status = 200) {
+    return new Response(JSON.stringify(body), {
+      status,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Methods": "POST",
+        "Content-Type": "application/json",
+      },
+    });
   }
 }
 

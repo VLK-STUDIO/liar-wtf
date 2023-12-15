@@ -1,6 +1,9 @@
 import PartySocket from "partysocket";
 import type { GameEvent, PartyClientRequest } from "~/party/types";
 
+const PARTYKIT_HOST =
+  import.meta.env.VITE_PARTYKIT_HOST || "http://localhost:1999";
+
 export type StateShape =
   | {
       phase: "INIT";
@@ -23,9 +26,6 @@ export const useGameStore = defineStore("game", {
     connect(roomId: string, username: string) {
       return new Promise<void>((resolve, reject) => {
         const userId = this.getUserId();
-
-        const PARTYKIT_HOST =
-          import.meta.env.VITE_PARTYKIT_HOST || "localhost:1999";
 
         const socket = new PartySocket({
           host: PARTYKIT_HOST,
@@ -114,6 +114,17 @@ export const useGameStore = defineStore("game", {
         playerId,
       });
     },
+    async requestNewTopic() {
+      if (this.state.phase !== "CHOOSING_TOPIC") return;
+
+      const response = await this.socketFetch({
+        type: "REQUEST_NEW_TOPIC",
+      });
+
+      console.log("New topic", response.newTopic);
+
+      this.state.topic = response.newTopic;
+    },
     getUserId() {
       const storedId = localStorage.getItem("userId");
 
@@ -130,14 +141,20 @@ export const useGameStore = defineStore("game", {
     async socketFetch(request: PartyClientRequest) {
       if (this.state.phase === "INIT") return;
 
-      console.log(this.state.userId);
-      await $fetch(`http://localhost:1999/parties/main/${this.state.roomId}`, {
-        method: "POST",
-        body: request,
-        headers: {
-          "X-User-Id": this.state.userId,
-        },
-      });
+      console.log({ host: PARTYKIT_HOST, roomId: this.state.roomId });
+
+      const json: any = await $fetch(
+        `${PARTYKIT_HOST}/parties/main/${this.state.roomId}`,
+        {
+          method: "POST",
+          body: request,
+          headers: {
+            "X-User-Id": this.state.userId,
+          },
+        }
+      );
+
+      return json;
     },
   },
 });

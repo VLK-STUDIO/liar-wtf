@@ -95,4 +95,7 @@ export type PartyClientRequest =
   | {
       type: "CHOOSE_TRUTHTELLER";
       playerId: string;
+    }
+  | {
+      type: "REQUEST_NEW_TOPIC";
     };
