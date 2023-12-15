@@ -112,8 +112,8 @@ export default class Server implements Party.Server {
     return new Response("Unknown event", { status: 400 });
   }
 
-  async onDisconnect(conn: Party.Connection) {
-    this.game.removePlayer(conn.id);
+  async onClose(conn: Party.Connection) {
+    await this.game.removePlayer(conn.id);
   }
 
   static sendEventToConnection(conn: Party.Connection, event: GameEvent) {

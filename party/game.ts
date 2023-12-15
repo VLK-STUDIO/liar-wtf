@@ -112,15 +112,15 @@ export class Game {
     }
   }
 
-  async removePlayer(playerId: string) {
+  async removePlayer(disconnectedPlayerId: string) {
     if (this.state.phase === "LOBBY") {
       this.state.players.allIds = this.state.players.allIds.filter(
-        (id) => id !== playerId
+        (id) => id !== disconnectedPlayerId
       );
 
-      delete this.state.players.byId[playerId];
+      delete this.state.players.byId[disconnectedPlayerId];
 
-      if (this.state.hostId === playerId) {
+      if (this.state.hostId === disconnectedPlayerId) {
         this.state.hostId = this.state.players.allIds[0] || null;
       }
 
@@ -140,17 +140,17 @@ export class Game {
       return;
     }
 
-    this.state.players.byId[playerId].disconnected = true;
+    this.state.players.byId[disconnectedPlayerId].disconnected = true;
 
     for (const playerId of this.state.players.allIds) {
-      if (playerId === this.state.guesserId) {
+      if (playerId === disconnectedPlayerId) {
         continue;
       }
 
       this.notifier?.(playerId, {
         type: "PLAYER_DISCONNECTED",
         payload: {
-          playerName: this.state.players.byId[playerId].name,
+          playerName: this.state.players.byId[disconnectedPlayerId].name,
         },
       });
     }
