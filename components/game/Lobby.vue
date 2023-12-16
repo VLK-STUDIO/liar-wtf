@@ -57,6 +57,7 @@
       class="mt-6"
       @click="handleStartGame"
       :loading="isStartPending"
+      loading-icon="i-tabler-loader-2"
     >
       {{ $t("game.lobby.startGameCta") }}
     </UButton>

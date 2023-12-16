@@ -5,6 +5,9 @@ export default defineNuxtConfig({
   colorMode: {
     preference: "light",
   },
+  ui: {
+    icons: ["tabler"],
+  },
   i18n: {
     baseUrl: "https://truthless.vercel.app",
     defaultLocale: "en",

@@ -44,7 +44,7 @@
             description: t("game.toasts.playerDisconnected.description", {
               playerName: event.payload.playerName,
             }),
-            icon: "i-heroicons-user-minus",
+            icon: "i-tabler-user-minus",
             color: "red",
           });
         } else if (event.type === "PLAYER_RECONNECTED") {
@@ -53,7 +53,7 @@
             description: t("game.toasts.playerReconnected.description", {
               playerName: event.payload.playerName,
             }),
-            icon: "i-heroicons-user-plus",
+            icon: "i-tabler-user-plus",
             color: "green",
           });
         }
@@ -62,7 +62,7 @@
       toast.add({
         title: t("game.toasts.connectionError.title"),
         description: t("game.toasts.connectionError.description"),
-        icon: "i-heroicons-x-circle",
+        icon: "i-tabler-x-circle",
         color: "red",
       });
     } finally {
@@ -99,7 +99,7 @@
     v-else-if="isConnectionPending === true"
     class="flex flex-col items-center gap-2 text-gray-600"
   >
-    <UIcon name="i-heroicons-arrow-path" class="animate-spin text-2xl" />
+    <UIcon name="i-tabler-loader-2" class="animate-spin text-2xl" />
     <p>{{ $t("game.userNameForm.pendingJoin") }}</p>
   </div>
   <Game

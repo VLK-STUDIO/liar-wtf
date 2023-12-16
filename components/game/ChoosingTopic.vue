@@ -52,6 +52,7 @@
       size="lg"
       color="gray"
       :loading="isTopicChangeRequestPending"
+      loading-icon="i-tabler-loader-2"
     >
       {{ $t("game.choosingTopicScreen.changeTopicCta") }}
     </UButton>

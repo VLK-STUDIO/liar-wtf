@@ -30,6 +30,7 @@
       <template v-for="meta in head.meta" :key="meta.id">
         <Meta :id="meta.id" :property="meta.property" :content="meta.content" />
       </template>
+      <Meta property="description" :content="$t('layout.seo.description')" />
     </Head>
     <Body>
       <main

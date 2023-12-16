@@ -49,7 +49,7 @@
         size="lg"
         type="button"
         :trailing-icon="
-          formState.selectedSuspectId === suspectId ? 'i-heroicons-check' : ''
+          formState.selectedSuspectId === suspectId ? 'i-tabler-check' : ''
         "
         class="justify-between"
         :aria-label="

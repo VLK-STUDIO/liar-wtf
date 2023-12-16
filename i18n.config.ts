@@ -3,6 +3,12 @@ export default defineI18nConfig(() => ({
   locale: "en",
   messages: {
     en: {
+      layout: {
+        seo: {
+          description:
+            "A browser game of deception, deduction, and lying your guts out. For 3 or more players.",
+        },
+      },
       home: {
         seoTitle: "Home",
         header: {
@@ -100,6 +106,12 @@ export default defineI18nConfig(() => ({
       },
     },
     it: {
+      layout: {
+        seo: {
+          description:
+            "Un gioco nel browser di inganno, deduzione e bugie. Per 3 o più giocatori.",
+        },
+      },
       home: {
         seoTitle: "Home",
         header: {
