@@ -6,7 +6,17 @@ export default defineNuxtConfig({
     preference: "light",
   },
   i18n: {
+    baseUrl: "https://truthless.vercel.app",
     defaultLocale: "en",
-    locales: ["en", "it"],
+    locales: [
+      {
+        code: "en",
+        iso: "en-US",
+      },
+      {
+        code: "it",
+        iso: "it-IT",
+      },
+    ],
   },
 });

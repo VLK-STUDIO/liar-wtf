@@ -9,8 +9,8 @@
     useScope: "local",
   });
 
-  useSeoMeta({
-    title: t("game.seoTitle", { roomCode: route.params.id }),
+  definePageMeta({
+    title: "game.seoTitle",
   });
 
   const gameStore = useGameStore();

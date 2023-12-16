@@ -105,30 +105,30 @@ export default defineI18nConfig(() => ({
         header: {
           description: "Un gioco di inganno, deduzione e bugie.",
         },
-        createRoomLink: "Crea una stanza",
+        createRoomLink: "Crea una partita",
         roomCodeInput: {
-          label: "Codice stanza",
-          placeholder: "Inserisci un codice stanza",
+          label: "Codice partita",
+          placeholder: "Inserisci un codice partita",
         },
       },
       game: {
         seoTitle: "Gioco {roomCode}",
         userNameForm: {
           header: {
-            title: "Unisciti alla stanza",
+            title: "Unisciti alla partita",
             description: "Inserisci un nome per iniziare a giocare.",
           },
           nameInput: {
             label: "Nome",
             placeholder: "Inserisci un nome",
           },
-          pendingJoin: "Unendoti alla stanza...",
+          pendingJoin: "Accesso in corso...",
         },
         toasts: {
           connectionError: {
-            title: "Impossibile unirsi alla stanza.",
+            title: "Impossibile unirsi alla partita.",
             description:
-              "Qualcosa è andato storto mentre si cercava di unirsi alla stanza. Riprova.",
+              "Qualcosa è andato storto mentre si cercava di unirsi alla partita. Riprova.",
           },
           playerDisconnected: {
             title: "Un giocatore si è disconnesso.",
@@ -143,7 +143,7 @@ export default defineI18nConfig(() => ({
           header: {
             title: "Lobby",
             description:
-              "Fai entrare i tuoi amici nella stanza inserendo il codice {roomCode}.",
+              "Fai entrare i tuoi amici alla partita inserendo il codice {roomCode}.",
           },
           statusText: {
             waitingForMorePlayers: "In attesa di altri giocatori...",

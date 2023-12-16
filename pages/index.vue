@@ -1,10 +1,6 @@
 <script setup lang="ts">
-  const { t } = useI18n({
-    useScope: "local",
-  });
-
-  useSeoMeta({
-    title: t("home.seoTitle"),
+  definePageMeta({
+    title: "home.seoTitle",
   });
 
   const localePath = useLocalePath();
