@@ -24,18 +24,32 @@
   <div class="flex flex-col gap-6">
     <DescribedHeader
       v-if="hasGuesserWon"
-      :title="`${
-        props.players.byId[props.guesserId].name
-      } has guessed correctly!`"
+      :title="
+        $t('game.scoreboard.header.guesserWon.title', {
+          guesserName: props.players.byId[props.guesserId].name,
+        })
+      "
     >
-      {{ players.byId[props.truthtellerId].name }} has been awarded a point for
-      convincing them.
+      {{
+        $t("game.scoreboard.header.guesserWon.description", {
+          winnerName: props.players.byId[props.winnerId].name,
+        })
+      }}
     </DescribedHeader>
     <DescribedHeader
       v-else
-      :title="`${props.players.byId[props.winnerId].name} lied and won!`"
+      :title="
+        $t('game.scoreboard.header.guesserLost.title', {
+          winnerName: props.players.byId[props.winnerId].name,
+          guesserName: props.players.byId[props.guesserId].name,
+        })
+      "
     >
-      They have been awarded 2 points for lying and winning.
+      {{
+        $t("game.scoreboard.header.guesserLost.description", {
+          winnerName: props.players.byId[props.winnerId].name,
+        })
+      }}
     </DescribedHeader>
 
     <GameLeaderboard :players="sortedPlayers" />

@@ -53,7 +53,7 @@
       color="gray"
       :loading="isTopicChangeRequestPending"
     >
-      Change Topic
+      {{ $t("game.choosingTopicScreen.changeTopicCta") }}
     </UButton>
     <UProgress :value="secondsLeft" :max="max" />
   </div>

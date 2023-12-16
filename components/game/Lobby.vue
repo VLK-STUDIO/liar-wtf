@@ -24,9 +24,12 @@
 
 <template>
   <div class="w-full flex flex-col">
-    <DescribedHeader title="Room Lobby" class="mb-6">
-      Have your friends join by entering the room code
-      <strong class="font-semibold">{{ roomId }}</strong>
+    <DescribedHeader :title="$t('game.lobby.header.title')" class="mb-6">
+      <i18n-t keypath="game.lobby.header.description">
+        <template v-slot:roomCode>
+          <strong>{{ roomId }}</strong>
+        </template>
+      </i18n-t>
     </DescribedHeader>
 
     <div class="w-full flex flex-col gap-2 mb-3">
@@ -42,10 +45,10 @@
       v-if="players.allIds.length < 3"
       class="text-center text-gray-600 text-sm"
     >
-      Waiting for more players...
+      {{ $t("game.lobby.statusText.waitingForMorePlayers") }}
     </p>
     <p v-else-if="hostId !== userId" class="text-center text-gray-600 text-sm">
-      Waiting for host to start...
+      {{ $t("game.lobby.statusText.waitingForHostToStart") }}
     </p>
     <UButton
       v-else
@@ -55,7 +58,7 @@
       @click="handleStartGame"
       :loading="isStartPending"
     >
-      Start Game
+      {{ $t("game.lobby.startGameCta") }}
     </UButton>
   </div>
 </template>

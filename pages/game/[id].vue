@@ -5,8 +5,12 @@
 
   const route = useRoute();
 
+  const { t } = useI18n({
+    useScope: "local",
+  });
+
   useSeoMeta({
-    title: `Room ${route.params.id}`,
+    title: t("game.seoTitle", { roomCode: route.params.id }),
   });
 
   const gameStore = useGameStore();
@@ -34,24 +38,28 @@
       gameStore.registerToPlayerConnectionEvents((event) => {
         if (event.type === "PLAYER_DISCONNECTED") {
           toast.add({
-            title: "Player disconnected",
-            description: `${event.payload.playerName} has lost connection.`,
-            icon: "i-heroicons-user-remove",
+            title: t("game.toasts.playerDisconnected.title"),
+            description: t("game.toasts.playerDisconnected.description", {
+              playerName: event.payload.playerName,
+            }),
+            icon: "i-heroicons-user-minus",
             color: "red",
           });
         } else if (event.type === "PLAYER_RECONNECTED") {
           toast.add({
-            title: "Player reconnected",
-            description: `${event.payload.playerName} has reconnected.`,
-            icon: "i-heroicons-user-add",
+            title: t("game.toasts.playerReconnected.title"),
+            description: t("game.toasts.playerReconnected.description", {
+              playerName: event.payload.playerName,
+            }),
+            icon: "i-heroicons-user-plus",
             color: "green",
           });
         }
       });
     } catch (error) {
       toast.add({
-        title: "Couldn't connect to server",
-        description: "Please try again later.",
+        title: t("game.toasts.connectionError.title"),
+        description: t("game.toasts.connectionError.description"),
         icon: "i-heroicons-x-circle",
         color: "red",
       });
@@ -69,15 +77,19 @@
     class="flex flex-col max-w-sm w-full items-center gap-8"
   >
     <header class="flex flex-col items-center gap-1">
-      <h1 class="font-serif text-4xl font-semibold">Join Room</h1>
-      <p class="text-gray-600">Enter a name to start playing.</p>
+      <h1 class="font-serif text-4xl font-semibold">
+        {{ $t("game.userNameForm.header.title") }}
+      </h1>
+      <p class="text-gray-600">
+        {{ $t("game.userNameForm.header.description") }}
+      </p>
     </header>
     <div class="flex flex-col gap-2 w-full">
       <UInput
         v-model="formState.name"
-        label="Name"
+        :label="$t('game.userNameForm.nameInput.label')"
         name="name"
-        placeholder="Enter your name..."
+        :placeholder="$t('game.userNameForm.nameInput.placeholder')"
         required
         size="lg"
         class="w-full"
@@ -90,7 +102,7 @@
     class="flex flex-col items-center gap-2 text-gray-600"
   >
     <UIcon name="i-heroicons-arrow-path" class="animate-spin text-2xl" />
-    <p>Joining room...</p>
+    <p>{{ $t("game.userNameForm.pendingJoin") }}</p>
   </div>
   <Game
     v-else

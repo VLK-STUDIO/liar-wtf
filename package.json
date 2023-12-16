@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@nuxt/ui": "^2.11.1",
+    "@nuxtjs/i18n": "next",
     "@pinia/nuxt": "^0.5.1",
     "partysocket": "0.0.17",
     "pinia": "^2.1.7",

@@ -35,10 +35,10 @@
     @submit="handleSubmit"
     class="w-full flex flex-col items-center gap-10 text-center"
   >
-    <DescribedHeader :title="`The topic is ${topicTitle}`">
-      Guess who's telling the truth!
+    <DescribedHeader :title="$t('game.guessingScreen.header.title')">
+      {{ $t("game.guessingScreen.header.description") }}
     </DescribedHeader>
-    <div class="w-full flex flex-col gap-2">
+    <div class="w-full flex flex-col gap-2" role="radiogroup">
       <UButton
         v-for="suspectId in suspects.allIds"
         :key="suspectId"
@@ -50,6 +50,13 @@
           formState.selectedSuspectId === suspectId ? 'i-heroicons-check' : ''
         "
         class="justify-between"
+        :aria-label="
+          $t('game.guessingScreen.selectPlayerLabel', {
+            playerName: suspects.byId[suspectId].name,
+          })
+        "
+        :aria-selected="formState.selectedSuspectId === suspectId"
+        role="radio"
       >
         {{ suspects.byId[suspectId].name }}
       </UButton>
@@ -62,7 +69,7 @@
       type="submit"
       :loading="isChoicePending"
     >
-      Confirm choice
+      {{ $t("game.guessingScreen.confirmCta") }}
     </UButton>
   </UForm>
 </template>

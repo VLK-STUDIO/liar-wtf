@@ -18,8 +18,12 @@
 
 <template>
   <div class="flex flex-col gap-6">
-    <DescribedHeader title="Game Over!">
-      {{ sortedPlayers[0].name }} has won the game!
+    <DescribedHeader :title="$t('game.gameOverScreen.header.title')">
+      {{
+        $t("game.gameOverScreen.header.description", {
+          winner: sortedPlayers[0].name,
+        })
+      }}
     </DescribedHeader>
 
     <GameLeaderboard :players="sortedPlayers" />

@@ -7,9 +7,15 @@
 
 <template>
   <DescribedHeader
-    :title="`${guesserName} is guessing who's saying the truth...`"
+    :title="$t('game.waitingForGuessScreen.title', { guesserName })"
   >
-    Convince them that you're the one who read about
-    <strong class="font-semibold">{{ topicTitle }}</strong>
+    <i18n-t
+      keypath="game.waitingForGuessScreen.description"
+      :topic="topicTitle"
+    >
+      <template v-slot:topic>
+        <strong>{{ topicTitle }}</strong>
+      </template>
+    </i18n-t>
   </DescribedHeader>
 </template>

@@ -20,7 +20,7 @@
         {{ player.name }}
       </span>
       <span class="text-right tabular-nums">
-        {{ player.score }} pts
+        {{ player.score }} {{ $t("game.leaderboard.pointsSuffix") }}
         <span v-if="player.gainedPoints">(+{{ player.gainedPoints }})</span>
       </span>
     </div>
