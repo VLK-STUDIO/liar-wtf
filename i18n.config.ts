@@ -99,5 +99,103 @@ export default defineI18nConfig(() => ({
         },
       },
     },
+    it: {
+      home: {
+        seoTitle: "Home",
+        header: {
+          description: "Un gioco di inganno, deduzione e bugie.",
+        },
+        createRoomLink: "Crea una stanza",
+        roomCodeInput: {
+          label: "Codice stanza",
+          placeholder: "Inserisci un codice stanza",
+        },
+      },
+      game: {
+        seoTitle: "Gioco {roomCode}",
+        userNameForm: {
+          header: {
+            title: "Unisciti alla stanza",
+            description: "Inserisci un nome per iniziare a giocare.",
+          },
+          nameInput: {
+            label: "Nome",
+            placeholder: "Inserisci un nome",
+          },
+          pendingJoin: "Unendoti alla stanza...",
+        },
+        toasts: {
+          connectionError: {
+            title: "Impossibile unirsi alla stanza.",
+            description:
+              "Qualcosa è andato storto mentre si cercava di unirsi alla stanza. Riprova.",
+          },
+          playerDisconnected: {
+            title: "Un giocatore si è disconnesso.",
+            description: "{playerName} ha perso la connessione",
+          },
+          playerReconnected: {
+            title: "Un giocatore si è riconnesso.",
+            description: "{playerName} si è riconnesso",
+          },
+        },
+        lobby: {
+          header: {
+            title: "Lobby",
+            description:
+              "Fai entrare i tuoi amici nella stanza inserendo il codice {roomCode}.",
+          },
+          statusText: {
+            waitingForMorePlayers: "In attesa di altri giocatori...",
+            waitingForHostToStart: "In attesa che l'host inizi la partita...",
+          },
+          startGameCta: "Inizia la partita",
+        },
+        waitingForSuspectsScreen: {
+          title: "Sei il giocatore che deve indovinare!",
+          description:
+            "In attesa che gli altri giocatori scelgano un argomento...",
+        },
+        waitingForGuessScreen: {
+          title: "{guesserName} sta indovinando chi sta dicendo la verità...",
+          description:
+            "Convincilo che sei tu quello che ha letto l'argomento {topic}!",
+        },
+        choosingTopicScreen: {
+          changeTopicCta: "Cambia argomento",
+        },
+        scoreboard: {
+          header: {
+            guesserWon: {
+              title: "{guesserName} ha indovinato correttamente!",
+              description:
+                "{winnerName} ha ricevuto un punto per averlo convinto.",
+            },
+            guesserLost: {
+              title: "{winnerName} ha mentito a {guesserName} e ha vinto!",
+              description:
+                "{winnerName} ha ricevuto due punti per aver mentito e vinto.",
+            },
+          },
+        },
+        guessingScreen: {
+          header: {
+            title: 'L\'argomento è "{topic}"',
+            description: "Chi pensi che lo abbia letto?",
+          },
+          selectPlayerLabel: "Seleziona il giocatore {playerName}",
+          confirmCta: "Conferma scelta",
+        },
+        gameOverScreen: {
+          header: {
+            title: "Game over!",
+            description: "{winner} ha vinto la partita!",
+          },
+        },
+        leaderboard: {
+          pointsSuffix: "pt",
+        },
+      },
+    },
   },
 }));

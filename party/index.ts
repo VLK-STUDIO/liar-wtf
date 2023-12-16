@@ -21,11 +21,13 @@ export default class Server implements Party.Server {
 
   async onConnect(conn: Party.Connection, ctx: Party.ConnectionContext) {
     const name = Server.getNameFromRequest(ctx.request)!;
+    const locale = Server.getLocaleFromRequest(ctx.request)!;
 
     await this.game.addPlayer(
       {
         id: conn.id,
         name,
+        locale,
       },
       (playerId: string, event: GameEvent) => {
         const connection = this.party.getConnection(playerId);
@@ -136,6 +138,18 @@ export default class Server implements Party.Server {
     }
 
     return name;
+  }
+
+  static getLocaleFromRequest(request: Party.Request) {
+    const requestUrl = new URL(request.url);
+
+    const locale = requestUrl.searchParams.get("locale");
+
+    if (!locale) {
+      return null;
+    }
+
+    return locale;
   }
 
   static createResponse(body: any, status = 200) {

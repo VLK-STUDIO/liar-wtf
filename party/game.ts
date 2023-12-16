@@ -31,6 +31,7 @@ type GameState = {
     }
   >;
   currentPhaseEndsAt?: number;
+  roomLocale: string;
 };
 
 type Notifier = (playerId: string, event: GameEvent) => void;
@@ -49,11 +50,15 @@ export class Game {
       allIds: [],
     },
     topics: {},
+    roomLocale: "en",
   };
 
   notifier?: Notifier;
 
-  async addPlayer(player: { id: string; name: string }, notifier: Notifier) {
+  async addPlayer(
+    player: { id: string; name: string; locale?: string },
+    notifier: Notifier
+  ) {
     this.notifier = notifier;
 
     if (this.state.players.byId[player.id]) {
@@ -96,6 +101,7 @@ export class Game {
 
     if (this.state.hostId === null) {
       this.state.hostId = player.id;
+      this.state.roomLocale = player.locale || "en";
     }
 
     for (const playerId of this.state.players.allIds) {
@@ -254,7 +260,7 @@ export class Game {
       return;
     }
 
-    const topic = await Game.fetchRandomTopic();
+    const topic = await Game.fetchRandomTopic(this.state.roomLocale);
 
     this.state.topics[playerId] = topic;
 
@@ -332,7 +338,7 @@ export class Game {
     let result: Record<string, any> = {};
 
     for (const playerId of playerIdsWithoutGuesser) {
-      result[playerId] = await Game.fetchRandomTopic();
+      result[playerId] = await Game.fetchRandomTopic(this.state.roomLocale);
     }
 
     return result;
@@ -460,9 +466,9 @@ export class Game {
     throw new Error("Invalid phase while computing game event for player");
   }
 
-  static async fetchRandomTopic() {
+  static async fetchRandomTopic(locale: string = "en") {
     const response = await fetch(
-      "https://en.wikipedia.org/api/rest_v1/page/random/summary"
+      `https://${locale}.wikipedia.org/api/rest_v1/page/random/summary`
     );
 
     const data = await response.json();

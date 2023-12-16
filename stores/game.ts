@@ -23,7 +23,7 @@ export const useGameStore = defineStore("game", {
     };
   },
   actions: {
-    connect(roomId: string, username: string) {
+    connect(roomId: string, username: string, options: { locale: string }) {
       return new Promise<void>((resolve, reject) => {
         const userId = this.getUserId();
 
@@ -34,6 +34,7 @@ export const useGameStore = defineStore("game", {
           query: () => {
             return {
               name: username,
+              locale: options.locale,
             };
           },
           maxRetries: 0,

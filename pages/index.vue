@@ -7,6 +7,8 @@
     title: t("home.seoTitle"),
   });
 
+  const localePath = useLocalePath();
+
   const STATIC_ROOM_CODE = getRandomString(5);
 
   const { siteName } = useAppConfig();
@@ -24,11 +26,11 @@
     </p>
   </header>
   <div class="flex flex-col gap-4 w-full">
-    <UButton :to="`/game/${STATIC_ROOM_CODE}`" block size="lg">
+    <UButton :to="localePath(`/game/${STATIC_ROOM_CODE}`)" block size="lg">
       {{ $t("home.createRoomLink") }}
     </UButton>
     <UDivider />
-    <form :action="`/game/${state.code}`">
+    <form :action="localePath(`/game/${state.code}`)">
       <UInput
         maxlength="5"
         minlength="5"

@@ -5,7 +5,7 @@
 
   const route = useRoute();
 
-  const { t } = useI18n({
+  const { t, locale } = useI18n({
     useScope: "local",
   });
 
@@ -33,7 +33,9 @@
     isConnectionPending.value = true;
 
     try {
-      await gameStore.connect(route.params.id as string, data.name);
+      await gameStore.connect(route.params.id as string, data.name, {
+        locale: locale.value,
+      });
 
       gameStore.registerToPlayerConnectionEvents((event) => {
         if (event.type === "PLAYER_DISCONNECTED") {
@@ -76,14 +78,10 @@
     :state="formState"
     class="flex flex-col max-w-sm w-full items-center gap-8"
   >
-    <header class="flex flex-col items-center gap-1">
-      <h1 class="font-serif text-4xl font-semibold">
-        {{ $t("game.userNameForm.header.title") }}
-      </h1>
-      <p class="text-gray-600">
-        {{ $t("game.userNameForm.header.description") }}
-      </p>
-    </header>
+    <DescribedHeader :title="$t('game.userNameForm.header.title')">
+      {{ $t("game.userNameForm.header.description") }}
+    </DescribedHeader>
+
     <div class="flex flex-col gap-2 w-full">
       <UInput
         v-model="formState.name"
