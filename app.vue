@@ -11,7 +11,12 @@
   });
 
   const title = computed(
-    () => `${t(route.meta.title as string) ?? "TBD"} | ${config.siteName}`
+    () =>
+      `${
+        route.meta.title
+          ? `${t(route.meta.title as string)} | ${config.siteName}`
+          : config.siteName
+      }`
   );
 </script>
 
@@ -33,12 +38,10 @@
       <Meta property="description" :content="$t('layout.seo.description')" />
     </Head>
     <Body>
-      <main
-        class="h-[100dvh] overflow-y-auto overflow-x-hidden flex flex-col justify-center items-center gap-12 max-w-sm p-8 mx-auto"
-      >
+      <NuxtLayout>
         <NuxtPage />
         <UNotifications />
-      </main>
+      </NuxtLayout>
     </Body>
   </Html>
 </template>

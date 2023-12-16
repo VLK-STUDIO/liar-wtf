@@ -20,6 +20,10 @@ export default defineI18nConfig(() => ({
           label: "Room code",
           placeholder: "Enter a room code",
         },
+        rules: {
+          hint: "Never played before?",
+          link: "Read the rules",
+        },
       },
       game: {
         seoTitle: "Game {roomCode}",
@@ -104,6 +108,9 @@ export default defineI18nConfig(() => ({
           pointsSuffix: "pts",
         },
       },
+      rules: {
+        seoTitle: "Rules",
+      },
     },
     it: {
       layout: {
@@ -121,6 +128,10 @@ export default defineI18nConfig(() => ({
         roomCodeInput: {
           label: "Codice partita",
           placeholder: "Inserisci un codice partita",
+        },
+        rules: {
+          hint: "Non hai mai giocato prima?",
+          link: "Leggi le regole",
         },
       },
       game: {
@@ -207,6 +218,9 @@ export default defineI18nConfig(() => ({
         leaderboard: {
           pointsSuffix: "pt",
         },
+      },
+      rules: {
+        seoTitle: "Regole",
       },
     },
   },

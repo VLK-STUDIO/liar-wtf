@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@nuxt/content": "latest",
     "@nuxt/devtools": "latest",
     "concurrently": "^8.2.2",
     "nuxt": "^3.8.2",

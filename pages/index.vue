@@ -37,5 +37,11 @@
         v-model="state.code"
       />
     </form>
+    <p class="w-full text-xs text-gray-500 text-center">
+      {{ $t("home.rules.hint") }}
+      <NuxtLink :to="localePath('/rules')" class="font-semibold underline">
+        {{ $t("home.rules.link") }}
+      </NuxtLink>
+    </p>
   </div>
 </template>
