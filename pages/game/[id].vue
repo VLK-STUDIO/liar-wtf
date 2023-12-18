@@ -1,17 +1,17 @@
 <script setup lang="ts">
-  import type { FormSubmitEvent } from "@nuxt/ui/dist/runtime/types";
-  import type { UnwrapRef } from "vue";
   import type { StateShape } from "~/stores/game";
-
-  const route = useRoute();
-
-  const { t, locale } = useI18n({
-    useScope: "local",
-  });
 
   definePageMeta({
     title: "game.seoTitle",
   });
+
+  const { locale, t } = useI18n({
+    useScope: "local",
+  });
+
+  const route = useRoute();
+
+  const roomId = route.params.id as string;
 
   const gameStore = useGameStore();
 
@@ -21,19 +21,25 @@
     navigateTo("/");
   }
 
-  const formState = ref({
-    name: "",
+  const isConnectionPending = ref(true);
+
+  onMounted(() => {
+    const username = localStorage.getItem(`username-${roomId}`);
+
+    if (username) {
+      return connectToGame(username);
+    }
+
+    isConnectionPending.value = false;
   });
 
-  const isConnectionPending = ref(false);
-
-  async function handleSubmit({
-    data,
-  }: FormSubmitEvent<UnwrapRef<typeof formState>>) {
+  async function connectToGame(username: string) {
     isConnectionPending.value = true;
 
+    localStorage.setItem(`username-${roomId}`, username);
+
     try {
-      await gameStore.connect(route.params.id as string, data.name, {
+      await gameStore.connect(route.params.id as string, username, {
         locale: locale.value,
       });
 
@@ -72,39 +78,18 @@
 </script>
 
 <template>
-  <UForm
-    v-if="isConnectionPending === false && gameStore.state.phase === 'INIT'"
-    @submit="handleSubmit"
-    :state="formState"
-    class="flex flex-col max-w-sm w-full items-center gap-8"
-  >
-    <DescribedHeader :title="$t('game.userNameForm.header.title')">
-      {{ $t("game.userNameForm.header.description") }}
-    </DescribedHeader>
-
-    <div class="flex flex-col gap-2 w-full">
-      <UInput
-        v-model="formState.name"
-        :label="$t('game.userNameForm.nameInput.label')"
-        name="name"
-        :placeholder="$t('game.userNameForm.nameInput.placeholder')"
-        required
-        size="lg"
-        class="w-full"
-        minlength="2"
-      />
-    </div>
-  </UForm>
-  <div
-    v-else-if="isConnectionPending === true"
-    class="flex flex-col items-center gap-2 text-gray-600"
-  >
-    <UIcon name="i-tabler-loader-2" class="animate-spin text-2xl" />
-    <p>{{ $t("game.userNameForm.pendingJoin") }}</p>
+  <div class="flex flex-col gap-2 items-center" v-if="isConnectionPending">
+    <UIcon name="i-tabler-loader-2" color="gray" class="animate-spin" />
+    <span>{{ $t("game.pendingJoin") }}</span>
   </div>
   <Game
-    v-else
+    v-else-if="gameStore.state.phase !== 'INIT'"
     :game="(gameStore.state as StateShape)"
     :roomCode="(route.params.id as string)"
+  />
+  <GameNameForm
+    v-else
+    :roomId="(route.params.id as string)"
+    @submit="connectToGame"
   />
 </template>

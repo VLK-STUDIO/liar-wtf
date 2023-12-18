@@ -12,7 +12,7 @@ Quando l'indovino avrà preso una decisione, potrà selezionare chi pensa stia d
 
 Il gioco continuerà fino a quando tutti i giocatori non saranno stati indovini almeno una volta.
 
-## Crediti
+## Riconoscimenti
 
 Questo sito web è una versione digitalizzata di un'idea resa popolare dalla serie web di Tom Scott [Two of these people are lying](https://www.youtube.com/watch?v=AlNNkeB9pjU).
 

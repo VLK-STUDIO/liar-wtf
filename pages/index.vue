@@ -5,7 +5,7 @@
 
   const localePath = useLocalePath();
 
-  const STATIC_ROOM_CODE = getRandomString(5);
+  const STATIC_ROOM_CODE = useState(() => getRandomString(5));
 
   const { siteName } = useAppConfig();
 
@@ -26,7 +26,10 @@
       {{ $t("home.createRoomLink") }}
     </UButton>
     <UDivider />
-    <form :action="localePath(`/game/${state.code}`)">
+    <form
+      :action="state.code ? localePath(`/game/${state.code}`) : undefined"
+      class="flex flex-col gap-2"
+    >
       <UInput
         maxlength="5"
         minlength="5"
@@ -36,6 +39,16 @@
         :placeholder="$t('home.roomCodeInput.placeholder')"
         v-model="state.code"
       />
+      <UButton
+        type="submit"
+        :disabled="state.code.length !== 5"
+        class="peer-invalid:disabled"
+        size="lg"
+        block
+        color="gray"
+      >
+        {{ $t("home.joinRoomCta") }}
+      </UButton>
     </form>
     <p class="w-full text-xs text-gray-500 text-center">
       {{ $t("home.rules.hint") }}

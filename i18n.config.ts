@@ -24,6 +24,7 @@ export default defineI18nConfig(() => ({
           hint: "Never played before?",
           link: "Read the rules",
         },
+        joinRoomCta: "Join room",
       },
       game: {
         seoTitle: "Game {roomCode}",
@@ -36,8 +37,9 @@ export default defineI18nConfig(() => ({
             label: "Name",
             placeholder: "Enter a name",
           },
-          pendingJoin: "Joining room...",
+          submitCta: "Join game",
         },
+        pendingJoin: "Joining room...",
         toasts: {
           connectionError: {
             title: "Couldn't join game.",
@@ -133,6 +135,7 @@ export default defineI18nConfig(() => ({
           hint: "Non hai mai giocato prima?",
           link: "Leggi le regole",
         },
+        joinRoomCta: "Unisciti alla partita",
       },
       game: {
         seoTitle: "Gioco {roomCode}",
@@ -145,8 +148,9 @@ export default defineI18nConfig(() => ({
             label: "Nome",
             placeholder: "Inserisci un nome",
           },
-          pendingJoin: "Accesso in corso...",
+          submitCta: "Unisciti alla partita",
         },
+        pendingJoin: "Accesso in corso...",
         toasts: {
           connectionError: {
             title: "Impossibile unirsi alla partita.",

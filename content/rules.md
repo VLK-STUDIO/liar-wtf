@@ -22,7 +22,7 @@ are wrong, the liar will get 2 points instead.
 
 The game will continue until all players have been the guesser at least once.
 
-## Credits
+## Acknowledgements
 
 This website is a digitalized version of an idea popularized by Tom Scott's [Two of these people are lying](https://www.youtube.com/watch?v=AlNNkeB9pjU) web series.
 
