@@ -1,7 +1,15 @@
+const URL = "https://liar.wtf";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxtjs/i18n", "@nuxt/content"],
+  modules: [
+    "@nuxt/ui",
+    "@pinia/nuxt",
+    "@nuxtjs/i18n",
+    "@nuxt/content",
+    "nuxt-simple-sitemap",
+  ],
   colorMode: {
     preference: "light",
   },
@@ -9,7 +17,7 @@ export default defineNuxtConfig({
     icons: ["tabler"],
   },
   i18n: {
-    baseUrl: "https://liarwtf.vercel.app",
+    baseUrl: URL,
     defaultLocale: "en",
     locales: [
       {
@@ -21,5 +29,8 @@ export default defineNuxtConfig({
         iso: "it-IT",
       },
     ],
+  },
+  site: {
+    url: URL,
   },
 });
