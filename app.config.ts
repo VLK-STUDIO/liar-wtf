@@ -2,5 +2,5 @@ export default defineAppConfig({
   ui: {
     primary: "teal",
   },
-  siteName: "Truthless",
+  siteName: "liar.wtf",
 });

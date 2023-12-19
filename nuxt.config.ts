@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     icons: ["tabler"],
   },
   i18n: {
-    baseUrl: "https://truthless.vercel.app",
+    baseUrl: "https://liarwtf.vercel.app",
     defaultLocale: "en",
     locales: [
       {
