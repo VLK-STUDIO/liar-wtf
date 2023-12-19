@@ -7,7 +7,10 @@ export default defineI18nConfig(() => ({
         seo: {
           description:
             "A browser game of deception, deduction, and lying your guts out. For 3 or more players.",
+          keywords:
+            "game, browser, deception, deduction, lying, fun, online, multiplayer, wikipedia, party, friends, among us, lupus in tabula",
         },
+        footer: "Made with love and coffee at {author}",
       },
       home: {
         seoTitle: "Home",
@@ -119,7 +122,10 @@ export default defineI18nConfig(() => ({
         seo: {
           description:
             "Un gioco nel browser di inganno, deduzione e bugie. Per 3 o più giocatori.",
+          keywords:
+            "gioco, browser, inganno, deduzione, bugie, divertimento, online, multiplayer, wikipedia, party, amici, among us, lupus in tabula",
         },
+        footer: "Creato con amore e caffè da {author}",
       },
       home: {
         seoTitle: "Home",

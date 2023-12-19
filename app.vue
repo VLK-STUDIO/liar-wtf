@@ -36,6 +36,7 @@
         <Meta :id="meta.id" :property="meta.property" :content="meta.content" />
       </template>
       <Meta property="description" :content="$t('layout.seo.description')" />
+      <Meta property="keywords" :content="$t('layout.seo.keywords')" />
     </Head>
     <Body>
       <NuxtLayout>
