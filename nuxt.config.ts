@@ -28,6 +28,18 @@ export default defineNuxtConfig({
         code: "it",
         iso: "it-IT",
       },
+      {
+        code: "es",
+        iso: "es-ES",
+      },
+      {
+        code: "de",
+        iso: "de-DE",
+      },
+      {
+        code: "fr",
+        iso: "fr-FR",
+      },
     ],
   },
   site: {
