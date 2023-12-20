@@ -108,6 +108,7 @@ export const it = {
     },
     leaderboard: {
       pointsSuffix: "pt",
+      you: "Tu",
     },
   },
   rules: {

@@ -6,6 +6,7 @@
       score: number;
       gainedPoints?: number;
     }[];
+    playerId: string;
   }>();
 </script>
 
@@ -18,6 +19,9 @@
     >
       <span>
         {{ player.name }}
+        <span v-if="player.id === playerId">
+          ({{ $t("game.leaderboard.you") }})
+        </span>
       </span>
       <span class="text-right tabular-nums">
         {{ player.score }} {{ $t("game.leaderboard.pointsSuffix") }}

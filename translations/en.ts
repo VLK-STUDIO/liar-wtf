@@ -106,6 +106,7 @@ export const en = {
     },
     leaderboard: {
       pointsSuffix: "pts",
+      you: "You",
     },
   },
   rules: {

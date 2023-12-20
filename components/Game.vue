@@ -34,6 +34,11 @@
     :truthtellerId="game.truthTellerId"
     :hasGuesserWon="game.hasGuesserWon"
     :guesserId="game.guesserId"
+    :playerId="game.userId"
   />
-  <GameOver v-else-if="game.phase === 'GAME_OVER'" :players="game.players" />
+  <GameOver
+    v-else-if="game.phase === 'GAME_OVER'"
+    :players="game.players"
+    :player-id="game.userId"
+  />
 </template>

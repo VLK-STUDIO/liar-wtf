@@ -1,3 +1,5 @@
+import type { en } from "~/translations/en";
+
 export const fr = {
   layout: {
     seo: {
@@ -106,9 +108,10 @@ export const fr = {
     },
     leaderboard: {
       pointsSuffix: "pts",
+      you: "Vous",
     },
   },
   rules: {
     seoTitle: "Règles",
   },
-};
+} satisfies typeof en;

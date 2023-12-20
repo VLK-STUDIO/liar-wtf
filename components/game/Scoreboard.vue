@@ -8,6 +8,7 @@
     truthtellerId: string;
     hasGuesserWon: boolean;
     guesserId: string;
+    playerId: string;
   }>();
 
   const sortedPlayers = computed(() =>
@@ -52,6 +53,6 @@
       }}
     </DescribedHeader>
 
-    <GameLeaderboard :players="sortedPlayers" />
+    <GameLeaderboard :players="sortedPlayers" :player-id="playerId" />
   </div>
 </template>
