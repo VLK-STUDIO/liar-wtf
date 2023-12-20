@@ -12,6 +12,7 @@
     <i18n-t
       keypath="game.waitingForGuessScreen.description"
       :topic="topicTitle"
+      scope="global"
     >
       <template v-slot:topic>
         <strong>{{ topicTitle }}</strong>

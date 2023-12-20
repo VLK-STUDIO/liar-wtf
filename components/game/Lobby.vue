@@ -25,7 +25,7 @@
 <template>
   <div class="w-full flex flex-col">
     <DescribedHeader :title="$t('game.lobby.header.title')" class="mb-6">
-      <i18n-t keypath="game.lobby.header.description">
+      <i18n-t keypath="game.lobby.header.description" scope="global">
         <template v-slot:roomCode>
           <strong>{{ roomId }}</strong>
         </template>

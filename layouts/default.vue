@@ -2,6 +2,7 @@
   const config = useAppConfig();
 
   const route = useRoute();
+
   const { t } = useI18n();
 
   const head = useLocaleHead({
@@ -41,7 +42,7 @@
       >
         <slot />
         <footer class="text-xs text-gray-600 absolute bottom-2">
-          <i18n-t keypath="layout.footer">
+          <i18n-t keypath="layout.footer" scope="global">
             <template #author>
               <a href="https://vlkstudio.com" class="underline">VLK Studio</a>
             </template>
