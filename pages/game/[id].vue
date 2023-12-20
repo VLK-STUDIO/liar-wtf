@@ -6,7 +6,7 @@
   });
 
   const { locale, t } = useI18n({
-    useScope: "local",
+    useScope: "global",
   });
 
   const route = useRoute();

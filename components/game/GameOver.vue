@@ -17,7 +17,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-6 w-full">
     <DescribedHeader :title="$t('game.gameOverScreen.header.title')">
       {{
         $t("game.gameOverScreen.header.description", {

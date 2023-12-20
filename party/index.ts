@@ -79,7 +79,7 @@ export default class Server implements Party.Server {
         return Server.createResponse({ error: "Unauthorized" }, 401);
       }
 
-      await this.game.startGame();
+      await this.game.startGame(body.options);
 
       return Server.createResponse({ success: true });
     }

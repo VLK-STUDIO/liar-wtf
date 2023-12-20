@@ -31,13 +31,15 @@ type GameState = {
     }
   >;
   currentPhaseEndsAt?: number;
+  maxRounds: number;
+  currentRound: number;
   roomLocale: string;
 };
 
 type Notifier = (playerId: string, event: GameEvent) => void;
 
 export class Game {
-  static TIME_TO_CHOOSE_TOPIC = 30000;
+  static TIME_TO_CHOOSE_TOPIC = 60000;
   static TIME_TO_SHOW_SCOREBOARD = 10000;
 
   state: GameState = {
@@ -51,6 +53,8 @@ export class Game {
     },
     topics: {},
     roomLocale: "en",
+    maxRounds: 2,
+    currentRound: 0,
   };
 
   notifier?: Notifier;
@@ -162,7 +166,9 @@ export class Game {
     }
   }
 
-  async startGame() {
+  async startGame(options: { maxRounds: number }) {
+    this.state.maxRounds = options.maxRounds;
+
     await this.startNewRound();
   }
 
@@ -172,6 +178,10 @@ export class Game {
     this.state.topics = await this.fetchTopicsForPlayers();
     this.state.truthtellerId = this.getNextTruthTellerId();
     this.state.currentPhaseEndsAt = Date.now() + Game.TIME_TO_CHOOSE_TOPIC;
+
+    if (this.state.guesserId === this.state.players.allIds[0]) {
+      this.state.currentRound += 1;
+    }
 
     for (const playerId of this.state.players.allIds) {
       this.notifier?.(playerId, {
@@ -244,7 +254,8 @@ export class Game {
     setTimeout(() => {
       if (
         this.state.players.allIds.indexOf(this.state.guesserId!) ===
-        this.state.players.allIds.length - 1
+          this.state.players.allIds.length - 1 &&
+        this.state.currentRound === this.state.maxRounds
       ) {
         this.endGame();
         return;
@@ -353,7 +364,9 @@ export class Game {
       this.state.guesserId
     );
 
-    return this.state.players.allIds[guesserIndex + 1];
+    return this.state.players.allIds[
+      (guesserIndex + 1) % this.state.players.allIds.length
+    ];
   }
 
   private getNextTruthTellerId() {

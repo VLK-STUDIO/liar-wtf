@@ -5,8 +5,6 @@
 
   const localePath = useLocalePath();
 
-  const STATIC_ROOM_CODE = useState(() => getRandomString(5));
-
   const { siteName } = useAppConfig();
 
   const state = ref({
@@ -22,12 +20,16 @@
     </p>
   </header>
   <div class="flex flex-col gap-4 w-full">
-    <UButton :to="localePath(`/game/${STATIC_ROOM_CODE}`)" block size="lg">
-      {{ $t("home.createRoomLink") }}
-    </UButton>
+    <ClientOnly>
+      <UButton :to="localePath(`/game/${getRandomString(5)}`)" block size="lg">
+        {{ $t("home.createRoomLink") }}
+      </UButton>
+    </ClientOnly>
     <UDivider />
     <form
-      :action="state.code ? localePath(`/game/${state.code}`) : undefined"
+      :action="
+        state.code ? localePath(`/game/${state.code.toUpperCase()}`) : undefined
+      "
       class="flex flex-col gap-2"
     >
       <UInput

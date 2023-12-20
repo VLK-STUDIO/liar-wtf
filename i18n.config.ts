@@ -62,7 +62,7 @@ export default defineI18nConfig(() => ({
           header: {
             title: "Room Lobby",
             description:
-              "Have your friends join the room by entering the code {roomCode}.",
+              "Have your friends join the room by entering the code {roomCode} or send them the link to this page.",
           },
           statusText: {
             waitingForMorePlayers: "Waiting for more players...",
@@ -176,7 +176,7 @@ export default defineI18nConfig(() => ({
           header: {
             title: "Lobby",
             description:
-              "Fai entrare i tuoi amici alla partita inserendo il codice {roomCode}.",
+              "Fai entrare i tuoi amici alla partita inserendo il codice {roomCode} o inviando loro il link a questa pagina.",
           },
           statusText: {
             waitingForMorePlayers: "In attesa di altri giocatori...",

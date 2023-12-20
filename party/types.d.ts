@@ -91,6 +91,9 @@ export type GameEvent =
 export type PartyClientRequest =
   | {
       type: "START_GAME";
+      options: {
+        maxRounds: number;
+      };
     }
   | {
       type: "CHOOSE_TRUTHTELLER";

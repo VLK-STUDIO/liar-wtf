@@ -35,4 +35,5 @@
     :hasGuesserWon="game.hasGuesserWon"
     :guesserId="game.guesserId"
   />
+  <GameOver v-else-if="game.phase === 'GAME_OVER'" :players="game.players" />
 </template>

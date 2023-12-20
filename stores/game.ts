@@ -107,6 +107,9 @@ export const useGameStore = defineStore("game", {
     async startGame() {
       await this.socketFetch({
         type: "START_GAME",
+        options: {
+          maxRounds: 2,
+        },
       });
     },
     async chooseTruthteller(playerId: string) {
