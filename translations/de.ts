@@ -118,4 +118,9 @@ export const de = {
     seoTitle: "Regeln",
     homeLink: "Zurück zur Startseite",
   },
+  error: {
+    title: "Hoppla! Etwas ist schief gelaufen.",
+    description: "Anscheinend konnte diese Seite nicht geladen werden.",
+    homeLink: "Zurück zur Startseite",
+  },
 } satisfies typeof en;

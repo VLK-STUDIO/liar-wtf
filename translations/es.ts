@@ -116,4 +116,9 @@ export const es = {
     seoTitle: "Reglas",
     homeLink: "Página de inicio",
   },
+  error: {
+    title: "¡Ups! Algo salió mal.",
+    description: "Aparentemente esta página no se pudo cargar.",
+    homeLink: "Página de inicio",
+  },
 } satisfies typeof en;

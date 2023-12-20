@@ -115,4 +115,9 @@ export const it = {
     seoTitle: "Regole",
     homeLink: "Torna alla home",
   },
+  error: {
+    title: "Oops! Qualcosa è andato storto.",
+    description: "Apparentemente questa pagina non può essere caricata.",
+    homeLink: "Torna alla home",
+  },
 } satisfies typeof en;

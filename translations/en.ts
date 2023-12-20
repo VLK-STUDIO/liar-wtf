@@ -113,4 +113,9 @@ export const en = {
     seoTitle: "Rules",
     homeLink: "Back to home",
   },
+  error: {
+    title: "Oops! Something went wrong.",
+    description: "Apparently this page could not be loaded.",
+    homeLink: "Back to home",
+  },
 };

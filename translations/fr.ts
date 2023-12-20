@@ -115,4 +115,9 @@ export const fr = {
     seoTitle: "Règles",
     homeLink: "Retour à l'accueil",
   },
+  error: {
+    title: "Oups ! Quelque chose s'est mal passé.",
+    description: "Apparemment, cette page n'a pas pu être chargée.",
+    homeLink: "Retour à l'accueil",
+  },
 } satisfies typeof en;
