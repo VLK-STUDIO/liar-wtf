@@ -1,14 +1,53 @@
+<script setup lang="ts">
+  const config = useAppConfig();
+
+  const route = useRoute();
+  const { t } = useI18n();
+
+  const head = useLocaleHead({
+    addDirAttribute: true,
+    identifierAttribute: "id",
+    addSeoAttributes: true,
+  });
+
+  const title = computed(() =>
+    route.meta.title
+      ? `${t(route.meta.title as string)} | ${config.siteName}`
+      : config.siteName
+  );
+</script>
+
 <template>
-  <main
-    class="min-h-[100dvh] relative overflow-y-auto overflow-x-hidden flex flex-col justify-center items-center gap-12 max-w-sm p-8 mx-auto"
-  >
-    <slot />
-    <footer class="text-xs text-gray-600 absolute bottom-2">
-      <i18n-t keypath="layout.footer">
-        <template #author>
-          <a href="https://vlkstudio.com" class="underline">VLK Studio</a>
-        </template>
-      </i18n-t>
-    </footer>
-  </main>
+  <Html :lang="head.htmlAttrs!.lang" :dir="head.htmlAttrs!.dir">
+    <Head>
+      <Title>{{ title }}</Title>
+      <template v-for="link in head.link" :key="link.id">
+        <Link
+          :id="link.id"
+          :rel="link.rel"
+          :href="link.href"
+          :hreflang="link.hreflang"
+        />
+      </template>
+      <template v-for="meta in head.meta" :key="meta.id">
+        <Meta :id="meta.id" :property="meta.property" :content="meta.content" />
+      </template>
+      <Meta name="description" :content="$t('layout.seo.description')" />
+      <Meta name="keywords" :content="$t('layout.seo.keywords')" />
+    </Head>
+    <Body>
+      <main
+        class="min-h-[100dvh] relative overflow-y-auto overflow-x-hidden flex flex-col justify-center items-center gap-12 max-w-sm p-8 mx-auto"
+      >
+        <slot />
+        <footer class="text-xs text-gray-600 absolute bottom-2">
+          <i18n-t keypath="layout.footer">
+            <template #author>
+              <a href="https://vlkstudio.com" class="underline">VLK Studio</a>
+            </template>
+          </i18n-t>
+        </footer>
+      </main>
+    </Body>
+  </Html>
 </template>
