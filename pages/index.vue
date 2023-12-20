@@ -20,11 +20,9 @@
     </p>
   </header>
   <div class="flex flex-col gap-4 w-full">
-    <ClientOnly>
-      <UButton :to="localePath(`/game/${getRandomString(5)}`)" block size="lg">
-        {{ $t("home.createRoomLink") }}
-      </UButton>
-    </ClientOnly>
+    <UButton :to="localePath(`/game/${getRandomString(5)}`)" block size="lg">
+      {{ $t("home.createRoomLink") }}
+    </UButton>
     <UDivider />
     <form
       :action="
