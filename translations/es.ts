@@ -114,5 +114,6 @@ export const es = {
   },
   rules: {
     seoTitle: "Reglas",
+    homeLink: "Página de inicio",
   },
 } satisfies typeof en;

@@ -113,5 +113,6 @@ export const it = {
   },
   rules: {
     seoTitle: "Regole",
+    homeLink: "Torna alla home",
   },
 } satisfies typeof en;

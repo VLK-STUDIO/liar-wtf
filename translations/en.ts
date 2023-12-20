@@ -111,5 +111,6 @@ export const en = {
   },
   rules: {
     seoTitle: "Rules",
+    homeLink: "Back to home",
   },
 };
