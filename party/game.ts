@@ -480,16 +480,24 @@ export class Game {
   }
 
   static async fetchRandomTopic(locale: string = "en") {
-    const response = await fetch(
-      `https://${locale}.wikipedia.org/api/rest_v1/page/random/summary`
-    );
-
-    const data = await response.json();
+    const data = await Promise.all([
+      fetch(`https://${locale}.wikipedia.org/api/rest_v1/page/random/summary`),
+      fetch(`https://${locale}.wikipedia.org/api/rest_v1/page/random/summary`),
+      fetch(`https://${locale}.wikipedia.org/api/rest_v1/page/random/summary`),
+    ])
+      .then((responses) => {
+        return Promise.all(responses.map((response) => response.json()));
+      })
+      .then((jsons) => {
+        return jsons.reduce((acc, json) => {
+          return acc.extract.length > json.extract.length ? acc : json;
+        }, jsons[0]);
+      });
 
     return {
       id: data.id,
       title: data.title,
-      summary: data.extract,
+      summary: data.extract_html,
     };
   }
 }
