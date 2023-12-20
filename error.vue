@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <main class="h-[100dvh] flex flex-col justify-center items-center">
+  <main class="h-[100dvh] flex flex-col justify-center items-center gap-8">
     <DescribedHeader :title="$t('error.title')">
       {{ $t("error.description") }}
     </DescribedHeader>
