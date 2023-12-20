@@ -33,4 +33,9 @@ export default defineNuxtConfig({
   site: {
     url: URL,
   },
+  routeRules: {
+    "/rules": {
+      prerender: true,
+    },
+  },
 });
