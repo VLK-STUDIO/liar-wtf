@@ -35,8 +35,8 @@
       <template v-for="meta in head.meta" :key="meta.id">
         <Meta :id="meta.id" :property="meta.property" :content="meta.content" />
       </template>
-      <Meta property="description" :content="$t('layout.seo.description')" />
-      <Meta property="keywords" :content="$t('layout.seo.keywords')" />
+      <Meta name="description" :content="$t('layout.seo.description')" />
+      <Meta name="keywords" :content="$t('layout.seo.keywords')" />
     </Head>
     <Body>
       <NuxtLayout>
