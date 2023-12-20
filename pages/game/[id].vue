@@ -78,7 +78,10 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 items-center" v-if="isConnectionPending">
+  <div
+    class="flex flex-col gap-2 items-center self-center"
+    v-if="isConnectionPending"
+  >
     <UIcon name="i-tabler-loader-2" color="gray" class="animate-spin" />
     <span>{{ $t("game.pendingJoin") }}</span>
   </div>

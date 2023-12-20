@@ -1,15 +1,13 @@
 <script setup lang="ts">
   definePageMeta({
-    layout: false,
+    title: "rules.seoTitle",
   });
 
   const localePath = useLocalePath();
 </script>
 
 <template>
-  <div
-    class="max-w-2xl mx-auto min-h-[100dvh] w-full overflow-y-auto flex flex-col gap-12 justify-center px-8 py-16"
-  >
+  <div class="max-w-2xl w-full flex flex-col gap-12 justify-center px-8 py-16">
     <UButton
       color="white"
       :to="localePath('/')"

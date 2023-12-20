@@ -21,7 +21,7 @@
   <UForm
     @submit="handleSubmit"
     :state="formState"
-    class="flex flex-col max-w-sm w-full items-center gap-8"
+    class="flex flex-col max-w-xs self-center w-full items-center gap-8"
   >
     <DescribedHeader :title="$t('game.userNameForm.header.title')">
       {{ $t("game.userNameForm.header.description") }}

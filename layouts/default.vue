@@ -37,7 +37,7 @@
     </Head>
     <Body>
       <main
-        class="min-h-[100dvh] relative overflow-y-auto overflow-x-hidden flex flex-col justify-center items-center gap-12 max-w-sm p-8 mx-auto"
+        class="min-h-[100dvh] relative overflow-y-auto overflow-x-hidden p-8 flex justify-center"
       >
         <slot />
         <footer class="text-xs text-gray-600 absolute bottom-2">

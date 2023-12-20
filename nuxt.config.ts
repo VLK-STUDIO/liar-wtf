@@ -50,4 +50,7 @@ export default defineNuxtConfig({
       prerender: true,
     },
   },
+  content: {
+    contentHead: false,
+  },
 });
