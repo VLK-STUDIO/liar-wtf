@@ -44,6 +44,7 @@ export default defineNuxtConfig({
   },
   site: {
     url: URL,
+    name: "Liar.wtf",
   },
   routeRules: {
     "/rules": {
