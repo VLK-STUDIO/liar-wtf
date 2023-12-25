@@ -1,4 +1,4 @@
-const URL = "https://liar.wtf";
+const URL = "https://www.liar.wtf";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
