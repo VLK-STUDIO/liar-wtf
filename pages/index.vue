@@ -16,7 +16,7 @@
   <div class="flex flex-col gap-8 max-w-xs self-center">
     <header class="flex flex-col gap-4 items-center">
       <h1 class="font-serif text-4xl font-semibold">{{ siteName }}</h1>
-      <p class="text-center text-gray-600">
+      <p class="text-center text-gray-600 dark:text-gray-400">
         {{ $t("home.header.description") }}
       </p>
     </header>
@@ -53,7 +53,7 @@
           {{ $t("home.joinRoomCta") }}
         </UButton>
       </form>
-      <p class="w-full text-xs text-gray-500 text-center">
+      <p class="w-full text-xs text-gray-500 dark:text-gray-400 text-center">
         {{ $t("home.rules.hint") }}
         <NuxtLink :to="localePath('/rules')" class="font-semibold underline">
           {{ $t("home.rules.link") }}

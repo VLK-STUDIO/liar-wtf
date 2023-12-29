@@ -10,9 +10,6 @@ export default defineNuxtConfig({
     "@nuxt/content",
     "nuxt-simple-sitemap",
   ],
-  colorMode: {
-    preference: "light",
-  },
   ui: {
     icons: ["tabler"],
   },

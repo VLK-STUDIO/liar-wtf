@@ -44,7 +44,10 @@
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-3 text-center">
       <h1 class="text-3xl font-semibold font-serif">{{ topic.title }}</h1>
-      <p class="font-serif text-gray-600" v-html="topic.summary" />
+      <p
+        class="font-serif text-gray-600 dark:text-gray-400"
+        v-html="topic.summary"
+      />
     </div>
     <UButton
       block

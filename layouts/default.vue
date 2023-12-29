@@ -41,7 +41,9 @@
         class="min-h-[100dvh] relative overflow-y-auto overflow-x-hidden p-8 flex justify-center"
       >
         <slot />
-        <footer class="text-xs text-gray-600 absolute bottom-2">
+        <footer
+          class="text-xs text-gray-600 dark:text-gray-400 absolute bottom-2"
+        >
           <i18n-t keypath="layout.footer" scope="global">
             <template #author>
               <a href="https://vlkstudio.com" class="underline">VLK Studio</a>

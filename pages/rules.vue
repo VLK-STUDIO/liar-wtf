@@ -16,6 +16,6 @@
     >
       {{ $t("rules.homeLink") }}
     </UButton>
-    <ContentDoc class="prose font-serif" />
+    <ContentDoc class="prose font-serif dark:prose-invert" />
   </div>
 </template>

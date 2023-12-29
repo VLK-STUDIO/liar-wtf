@@ -36,18 +36,21 @@
       <div
         v-for="playerId in players.allIds"
         :key="playerId"
-        class="w-full rounded-md p-2 border text-sm"
+        class="w-full rounded-md p-2 border dark:border-gray-700 text-sm"
       >
         {{ players.byId[playerId].name }}
       </div>
     </div>
     <p
       v-if="players.allIds.length < 3"
-      class="text-center text-gray-600 text-sm"
+      class="text-center text-gray-600 dark:text-gray-400 text-sm"
     >
       {{ $t("game.lobby.statusText.waitingForMorePlayers") }}
     </p>
-    <p v-else-if="hostId !== userId" class="text-center text-gray-600 text-sm">
+    <p
+      v-else-if="hostId !== userId"
+      class="text-center text-gray-600 dark:text-gray-400 text-sm"
+    >
       {{ $t("game.lobby.statusText.waitingForHostToStart") }}
     </p>
     <UButton

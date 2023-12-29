@@ -11,11 +11,13 @@
 </script>
 
 <template>
-  <div class="flex flex-col border rounded-md bg-gray-50 w-full text-sm">
+  <div
+    class="flex flex-col border rounded-md bg-gray-50 dark:bg-gray-800 dark:border-gray-700 w-full text-sm"
+  >
     <div
       v-for="player in players"
       :key="player.id"
-      class="flex items-center justify-between border-b last:border-b-0 py-2 px-3"
+      class="flex items-center justify-between border-b last:border-b-0 dark:border-gray-700 py-2 px-3"
     >
       <span>
         {{ player.name }}
