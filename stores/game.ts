@@ -37,7 +37,6 @@ export const useGameStore = defineStore("game", {
               locale: options.locale,
             };
           },
-          maxRetries: 0,
         });
 
         socket.onclose = () => {

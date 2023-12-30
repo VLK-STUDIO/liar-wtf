@@ -68,7 +68,7 @@
       toast.add({
         title: t("game.toasts.connectionError.title"),
         description: t("game.toasts.connectionError.description"),
-        icon: "i-tabler-x-circle",
+        icon: "i-tabler-circle-x",
         color: "red",
       });
     } finally {

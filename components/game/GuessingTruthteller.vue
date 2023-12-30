@@ -35,10 +35,13 @@
     @submit="handleSubmit"
     class="w-full flex flex-col items-center gap-10 text-center"
   >
-    <DescribedHeader
-      :title="$t('game.guessingScreen.header.title', { topic: topicTitle })"
-    >
-      {{ $t("game.guessingScreen.header.description") }}
+    <DescribedHeader>
+      <template #header>
+        {{ $t("game.guessingScreen.header.title", { topic: topicTitle }) }}
+      </template>
+      <template #description>
+        {{ $t("game.guessingScreen.header.description") }}
+      </template>
     </DescribedHeader>
     <div class="w-full flex flex-col gap-2" role="radiogroup">
       <UButton

@@ -40,7 +40,7 @@ type Notifier = (playerId: string, event: GameEvent) => void;
 
 export class Game {
   static TIME_TO_CHOOSE_TOPIC = 60000;
-  static TIME_TO_SHOW_SCOREBOARD = 10000;
+  static TIME_TO_SHOW_SCOREBOARD = 15000;
 
   state: GameState = {
     phase: "LOBBY",
@@ -215,8 +215,7 @@ export class Game {
       this.state.players.byId[this.state.guesserId!].score += 1;
     }
 
-    this.state.players.byId[guessId!].score +=
-      this.state.truthtellerId === guessId ? 1 : 2;
+    this.state.players.byId[guessId!].score += isGuesserCorrect ? 1 : 2;
 
     this.state.phase = "SHOWING_SCOREBOARD";
     this.state.currentPhaseEndsAt = Date.now() + Game.TIME_TO_SHOW_SCOREBOARD;
@@ -496,7 +495,7 @@ export class Game {
 
     return {
       id: data.id,
-      title: data.title,
+      title: data.title.replace(/\(.*\)/g, "").trim(),
       summary: data.extract_html,
     };
   }

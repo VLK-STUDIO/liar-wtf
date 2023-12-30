@@ -24,12 +24,17 @@
 
 <template>
   <div class="w-full flex flex-col">
-    <DescribedHeader :title="$t('game.lobby.header.title')" class="mb-6">
-      <i18n-t keypath="game.lobby.header.description" scope="global">
-        <template v-slot:roomCode>
-          <strong>{{ roomId }}</strong>
-        </template>
-      </i18n-t>
+    <DescribedHeader class="mb-6">
+      <template #header>
+        {{ $t("game.lobby.header.title") }}
+      </template>
+      <template #description>
+        <i18n-t keypath="game.lobby.header.description" scope="global">
+          <template v-slot:roomCode>
+            <strong>{{ roomId }}</strong>
+          </template>
+        </i18n-t>
+      </template>
     </DescribedHeader>
 
     <div class="w-full flex flex-col gap-2 mb-3">

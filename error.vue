@@ -4,8 +4,13 @@
 
 <template>
   <main class="h-[100dvh] flex flex-col justify-center items-center gap-8">
-    <DescribedHeader :title="$t('error.title')">
-      {{ $t("error.description") }}
+    <DescribedHeader>
+      <template #header>
+        {{ $t("error.title") }}
+      </template>
+      <template #description>
+        {{ $t("error.description") }}
+      </template>
     </DescribedHeader>
     <UButton
       :to="localePath('/')"

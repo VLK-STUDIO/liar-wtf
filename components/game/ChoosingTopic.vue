@@ -9,27 +9,9 @@
 
   const gameStore = useGameStore();
 
-  const timeLeft = ref(props.phaseEndsAt - Date.now());
-
   const isTopicChangeRequestPending = ref(false);
 
-  const max = Math.floor((props.phaseEndsAt - Date.now()) / 1000);
-
-  onMounted(() => {
-    const interval = setInterval(() => {
-      timeLeft.value = props.phaseEndsAt - Date.now();
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  });
-
-  const secondsLeft = computed(() => {
-    const result = Math.floor(timeLeft.value / 1000);
-
-    return result < 0 ? 0 : result;
-  });
+  const { secondsLeft, max } = useSecondsLeft(props.phaseEndsAt);
 
   async function requestTopicChange() {
     isTopicChangeRequestPending.value = true;

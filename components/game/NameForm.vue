@@ -23,8 +23,13 @@
     :state="formState"
     class="flex flex-col max-w-xs self-center w-full items-center gap-8"
   >
-    <DescribedHeader :title="$t('game.userNameForm.header.title')">
-      {{ $t("game.userNameForm.header.description") }}
+    <DescribedHeader>
+      <template #header>
+        {{ $t("game.userNameForm.header.title") }}
+      </template>
+      <template #description>
+        {{ $t("game.userNameForm.header.description") }}
+      </template>
     </DescribedHeader>
 
     <div class="flex flex-col gap-2 w-full">

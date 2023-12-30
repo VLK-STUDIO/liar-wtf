@@ -33,13 +33,22 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-6 w-full" id="game-over-screen">
-    <DescribedHeader :title="$t('game.gameOverScreen.header.title')">
-      {{
-        $t("game.gameOverScreen.header.description", {
-          winner: sortedPlayers[0].name,
-        })
-      }}
+  <div class="relative flex flex-col gap-6 w-full">
+    <div
+      class="absolute left-1/2 top-0 -translate-x-1/2 w-1 h-1"
+      id="game-over-screen"
+    />
+    <DescribedHeader>
+      <template #header>
+        {{ $t("game.gameOverScreen.header.title") }}
+      </template>
+      <template #description>
+        {{
+          $t("game.gameOverScreen.header.description", {
+            winner: sortedPlayers[0].name,
+          })
+        }}
+      </template>
     </DescribedHeader>
 
     <GameLeaderboard :players="sortedPlayers" :player-id="playerId" />

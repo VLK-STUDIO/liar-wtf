@@ -12,6 +12,7 @@
     <GameLobby v-if="game.phase === 'LOBBY'" v-bind="game" />
     <GameWaitingForSuspects
       v-else-if="game.phase === 'CHOOSING_TOPIC' && game.topic === null"
+      :phaseEndsAt="game.phaseEndsAt"
     />
     <GameChoosingTopic
       v-else-if="game.phase === 'CHOOSING_TOPIC' && game.topic !== null"
