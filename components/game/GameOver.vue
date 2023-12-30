@@ -20,7 +20,7 @@
 
   onMounted(() => {
     if (sortedPlayers.value[0].id === props.playerId) {
-      const { reward } = useReward("game-over-screen", "confetti", {
+      const { reward } = useReward("confetti-cannon", "confetti", {
         startVelocity: 10,
         spread: 360,
         elementCount: 100,
@@ -36,7 +36,7 @@
   <div class="relative flex flex-col gap-6 w-full">
     <div
       class="absolute left-1/2 top-0 -translate-x-1/2 w-1 h-1"
-      id="game-over-screen"
+      id="confetti-cannon"
     />
     <DescribedHeader>
       <template #header>
