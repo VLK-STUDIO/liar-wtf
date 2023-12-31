@@ -37,6 +37,7 @@
       :hasGuesserWon="game.hasGuesserWon"
       :guesserId="game.guesserId"
       :playerId="game.userId"
+      :phaseEndsAt="game.phaseEndsAt"
     />
     <GameOver
       v-else-if="game.phase === 'GAME_OVER'"

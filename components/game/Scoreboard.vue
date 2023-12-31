@@ -9,6 +9,7 @@
     hasGuesserWon: boolean;
     guesserId: string;
     playerId: string;
+    phaseEndsAt: number;
   }>();
 
   const sortedPlayers = computed(() =>
@@ -25,6 +26,8 @@
             : "SUSPECT",
       }))
   );
+
+  const { secondsLeft, max } = useSecondsLeft(props.phaseEndsAt);
 </script>
 
 <template>
@@ -72,5 +75,7 @@
     </DescribedHeader>
 
     <GameLeaderboard :players="sortedPlayers" :player-id="playerId" />
+
+    <UProgress :value="secondsLeft" :max="max" />
   </div>
 </template>

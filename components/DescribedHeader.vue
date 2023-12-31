@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-2 items-center text-center">
+  <div class="flex flex-col gap-4 items-center text-center">
     <h1 class="font-semibold font-serif text-3xl">
       <slot name="header" />
     </h1>
