@@ -7,7 +7,7 @@
 </script>
 
 <template>
-  <div class="max-w-2xl w-full flex flex-col gap-12 justify-center py-16">
+  <div class="max-w-2xl w-full flex flex-col gap-12 justify-center pt-10 pb-32">
     <UButton
       color="white"
       :to="localePath('/')"
