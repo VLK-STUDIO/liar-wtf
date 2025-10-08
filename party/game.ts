@@ -61,7 +61,7 @@ export class Game {
 
   async addPlayer(
     player: { id: string; name: string; locale?: string },
-    notifier: Notifier
+    notifier: Notifier,
   ) {
     this.notifier = notifier;
 
@@ -125,7 +125,7 @@ export class Game {
   async removePlayer(disconnectedPlayerId: string) {
     if (this.state.phase === "LOBBY") {
       this.state.players.allIds = this.state.players.allIds.filter(
-        (id) => id !== disconnectedPlayerId
+        (id) => id !== disconnectedPlayerId,
       );
 
       delete this.state.players.byId[disconnectedPlayerId];
@@ -311,10 +311,10 @@ export class Game {
                   {
                     name: this.state.players.byId[id].name,
                   },
-                ])
+                ]),
             ),
             allIds: this.state.players.allIds.filter(
-              (id) => id !== this.state.guesserId
+              (id) => id !== this.state.guesserId,
             ),
           },
         },
@@ -342,7 +342,7 @@ export class Game {
 
   private async fetchTopicsForPlayers() {
     const playerIdsWithoutGuesser = this.state.players.allIds.filter(
-      (playerId) => playerId !== this.state.guesserId
+      (playerId) => playerId !== this.state.guesserId,
     );
 
     let result: Record<string, any> = {};
@@ -360,7 +360,7 @@ export class Game {
     }
 
     const guesserIndex = this.state.players.allIds.indexOf(
-      this.state.guesserId
+      this.state.guesserId,
     );
 
     return this.state.players.allIds[
@@ -370,7 +370,7 @@ export class Game {
 
   private getNextTruthTellerId() {
     const playersWithoutGuesser = this.state.players.allIds.filter(
-      (playerId) => playerId !== this.state.guesserId
+      (playerId) => playerId !== this.state.guesserId,
     );
 
     const index = Math.floor(Math.random() * playersWithoutGuesser.length);
@@ -379,7 +379,7 @@ export class Game {
   }
 
   private computeCurrentGameEventForPlayer(
-    playerId: string
+    playerId: string,
   ): Extract<GameEvent, { type: "STATE_UPDATE" }>["payload"] {
     if (this.state.phase === "LOBBY") {
       return {
@@ -420,10 +420,10 @@ export class Game {
                     {
                       name: this.state.players.byId[id].name,
                     },
-                  ])
+                  ]),
               ),
               allIds: this.state.players.allIds.filter(
-                (id) => id !== this.state.guesserId
+                (id) => id !== this.state.guesserId,
               ),
             },
           },
@@ -479,12 +479,20 @@ export class Game {
   }
 
   static async fetchRandomTopic(locale: string = "en") {
+    const articleFetch = () =>
+      fetch(`https://${locale}.wikipedia.org/api/rest_v1/page/random/summary`, {
+        headers: {
+          "User-Agent":
+            "liar.wtf/1.0 (https://liar.wtf/;luca.farci@vlkstudio.com)",
+        },
+      });
+
     const data = await Promise.all([
-      fetch(`https://${locale}.wikipedia.org/api/rest_v1/page/random/summary`),
-      fetch(`https://${locale}.wikipedia.org/api/rest_v1/page/random/summary`),
-      fetch(`https://${locale}.wikipedia.org/api/rest_v1/page/random/summary`),
+      articleFetch(),
+      articleFetch(),
+      articleFetch(),
     ])
-      .then((responses) => {
+      .then(async (responses) => {
         return Promise.all(responses.map((response) => response.json()));
       })
       .then((jsons) => {

@@ -16,7 +16,7 @@
     "nuxt": "^3.8.2",
     "nuxt-schema-org": "^3.3.0",
     "nuxt-simple-sitemap": "^4.2.0",
-    "partykit": "0.0.43",
+    "partykit": "^0.0.115",
     "vue": "^3.3.10",
     "vue-router": "^4.2.5"
   },
@@ -26,7 +26,7 @@
     "@nuxtjs/i18n": "next",
     "@pinia/nuxt": "^0.5.1",
     "@vercel/analytics": "^1.1.1",
-    "partysocket": "0.0.17",
+    "partysocket": "^1.1.6",
     "pinia": "^2.1.7",
     "vue-rewards": "^1.0.1"
   }
